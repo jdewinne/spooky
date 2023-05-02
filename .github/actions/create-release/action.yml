@@ -23,7 +23,7 @@ inputs:
     default: '${GITHUB_SHA::7}'
 runs:
   using: 'docker'
-  image: 'replicated/vendor-cli:0.44.0'
+  image: 'Dockerfile'
   entrypoint: "ls -la"
   args:
     - release
