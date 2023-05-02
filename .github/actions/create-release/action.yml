@@ -24,12 +24,13 @@ inputs:
 runs:
   using: 'docker'
   image: 'replicated/vendor-cli:0.44.0'
+  entrypoint: 'sh -c "cd $GITHUB_WORKSPACE && replicated"'
   args:
     - release
     - create
     - --promote="${{ inputs.promote-channel }}"
     - --ensure-channel
-    - --yaml-dir=$GITHUB_WORKSPACE/${{ inputs.yaml-dir }}"
+    - --yaml-dir=${{ inputs.yaml-dir }}
     - --version="${{ inputs.version }}"
   env:
     REPLICATED_APP: ${{ inputs.replicated-app }}
