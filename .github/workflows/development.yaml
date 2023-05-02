@@ -1,0 +1,18 @@
+name: development
+
+## This is a test version of the workflow
+## against a non-production environment
+
+on:
+  push:
+    branches:
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
+      - '!main'     # excludes main
+
+jobs:
+  push-to-replicated:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
