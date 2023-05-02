@@ -24,7 +24,7 @@ outputs:
     description: 'Contains the yaml license.'
 runs:
   using: 'docker'
-  image: '../Dockerfile'
+  image: 'Dockerfile'
   args:
     - customer
     - create
