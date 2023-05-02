@@ -17,10 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - id: get_version
+      - name: Get version
+        id: get_version
         uses: battila7/get-version-action@v2
 
-      - id: package-helm-chart
+      - name: Package Helm Chart for Replicated
+        id: package-helm-chart
         run: |
           helm package relmatrix-app -u -d kots \
             --app-version=0.0.1-${{ steps.get_version.outputs.version-without-v }} \
@@ -33,3 +35,12 @@ jobs:
           find: '$VERSION'
           replace: '0.0.1-${{ steps.get_version.outputs.version-without-v }}'
           regex: false
+
+      - name: Create Replicated Release
+        uses: ./.github/actions/create-release
+        with:
+          replicated-app: ${{ secrets.REPLICATED_APP }}
+          replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          yaml-dir: ./kots
+          promote-channel: ${{ github.ref_name }}
+          version: 0.0.1-${{ steps.get_version.outputs.version-without-v }}
