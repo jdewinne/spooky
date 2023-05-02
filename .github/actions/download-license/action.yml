@@ -9,8 +9,8 @@ inputs:
     description: 'Replicated API Token.'
     required: true
     default: ''
-  customer-name:
-    description: 'Name of the customer.'
+  customer:
+    description: 'The Customer Name or ID'
     required: true
 outputs:
   license: # id of the output
@@ -21,7 +21,7 @@ runs:
   args:
     - customer
     - download-license
-    - --customer=${{ inputs.customer-name }}
+    - --customer=${{ inputs.customer }}
     - --output=json
   env:
     REPLICATED_APP: ${{ inputs.replicated-app }}

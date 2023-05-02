@@ -19,6 +19,9 @@ inputs:
     description: 'Channel to assign the customer to.'
     required: true
     default: '${GITHUB_REF}'
+outputs:
+  customer: # id of the output
+    description: 'Contains the yaml license.'
 runs:
   using: 'docker'
   image: '../Dockerfile'
