@@ -29,7 +29,7 @@ runs:
     - create
     - --promote="${{ inputs.promote-channel }}"
     - --ensure-channel
-    - --yaml-dir="$GITHUB_WORKSPACE/${{ inputs.yaml-dir }}"
+    - --yaml-dir="${{ github.workspace }}/${{ inputs.yaml-dir }}"
     - --version="${{ inputs.version }}"
   env:
     REPLICATED_APP: ${{ inputs.replicated-app }}
