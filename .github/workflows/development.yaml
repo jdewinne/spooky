@@ -59,7 +59,7 @@ jobs:
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          customer-name: "${{ github.ref_name }} ${{ matrix.distribution }}"
+          customer-name: ${{ github.ref_name }}-${{ matrix.distribution }}
           channel: ${{ github.ref_name }}
           customer-email: "${{ github.ref_name }}@example.com"
 

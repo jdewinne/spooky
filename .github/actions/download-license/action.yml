@@ -12,6 +12,9 @@ inputs:
   customer-name:
     description: 'Name of the customer.'
     required: true
+outputs:
+  license: # id of the output
+    description: 'Contains the yaml license.'
 runs:
   using: 'docker'
   image: '../Dockerfile'
