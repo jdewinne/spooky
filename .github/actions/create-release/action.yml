@@ -24,7 +24,7 @@ inputs:
 runs:
   using: 'docker'
   image: 'replicated/vendor-cli:0.44.0'
-  entrypoint: 'sh -c "cd $GITHUB_WORKSPACE && replicated"'
+  entrypoint: "ls -la"
   args:
     - release
     - create
