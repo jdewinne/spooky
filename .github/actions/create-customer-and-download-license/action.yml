@@ -19,6 +19,10 @@ inputs:
     description: 'Channel to assign the customer to.'
     required: true
     default: '${GITHUB_REF}'
+outputs:
+  license: # id of the output
+    description: 'Contains the yaml license.'
+    value: ${{ steps.download-customer-license.outputs.license }}
 runs:
   using: "composite"
   steps:
@@ -31,6 +35,7 @@ runs:
         customer-email: ${{ inputs.customer-email }}
         channel: ${{ inputs.channel }}
     - name: 'Replicated download customer license'
+      id: 'download-customer-license'
       uses: './.github/actions/download-license'
       with:
         replicated-app: ${{ inputs.replicated-app }}
