@@ -5,7 +5,7 @@ metadata:
 spec:
   # chart identifies a matching chart from a .tgz
   chart:
-    name: relmatrix
+    name: relmatrix-app
     chartVersion: $VERSION
 
   # helmVersion identifies the Helm Version used to render the Chart. Default is v2.
