@@ -46,6 +46,7 @@ jobs:
           version: 0.0.1-${{ steps.get_version.outputs.version-without-v }}
 
   reliability_matrix:
+    needs: push-to-replicated
     strategy:
       matrix:
         distribution: ['kind/v1.25.3', 'k3s/v1.26.0']
