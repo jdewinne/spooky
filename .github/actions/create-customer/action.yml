@@ -25,9 +25,9 @@ runs:
   args:
     - customer
     - create
-    - --name="${{ inputs.customer-name }}"
-    - --channel="${{ inputs.channel }}"
-    - --email="${{ inputs.customer-email }}"
+    - --name=${{ inputs.customer-name }}
+    - --channel=${{ inputs.channel }}
+    - --email=${{ inputs.customer-email }}
     - --output=json
   env:
     REPLICATED_APP: ${{ inputs.replicated-app }}

@@ -21,7 +21,7 @@ runs:
   args:
     - customer
     - download-license
-    - --customer="${{ inputs.customer-name }}"
+    - --customer=${{ inputs.customer-name }}
     - --output=json
   env:
     REPLICATED_APP: ${{ inputs.replicated-app }}
