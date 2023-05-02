@@ -23,7 +23,7 @@ runs:
   using: "composite"
   steps:
     - name: 'Replicated create customer'
-      uses: '/.github/actions/create-customer'
+      uses: './.github/actions/create-customer'
       with:
         replicated-app: ${{ inputs.replicated-app }}
         replicated-api-token: ${{ inputs.replicated-api-token }}
@@ -31,7 +31,7 @@ runs:
         customer-email: ${{ inputs.customer-email }}
         channel: ${{ inputs.channel }}
     - name: 'Replicated download customer license'
-      uses: '/.github/actions/download-license'
+      uses: './.github/actions/download-license'
       with:
         replicated-app: ${{ inputs.replicated-app }}
         replicated-api-token: ${{ inputs.replicated-api-token }}
