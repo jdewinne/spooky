@@ -22,17 +22,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: 'Replicated create customer'
-      uses: '../create-customer'
-      with:
-        replicated-app: ${{ inputs.replicated-app }}
-        replicated-api-token: ${{ inputs.replicated-api-token }}
-        customer-name: ${{ inputs.customer-name }}
-        customer-email: ${{ inputs.customer-email }}
-        channel: ${{ inputs.channel }}
-    - name: 'Replicated download customer license'
-      uses: '../download-license'
-      with:
-        replicated-app: ${{ inputs.replicated-app }}
-        replicated-api-token: ${{ inputs.replicated-api-token }}
-        customer-name: ${{ inputs.customer-name }}
+    - name: My first step
+      uses: octo-org/action-name@main
+    - name: My backup step
+      if: ${{ failure() }}
+      uses: actions/heroku@1.0.0
