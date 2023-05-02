@@ -2,11 +2,11 @@ name: 'Replicated create release'
 description: 'Create a Replicated release on a channel'
 inputs:
   replicated-app:
-    description: 'Replicated App Slug'
+    description: 'Replicated App Slug.'
     required: true
     default: ''
   replicated-api-token:
-    description: 'Replicated API Token'
+    description: 'Replicated API Token.'
     required: true
     default: ''
   yaml-dir:
