@@ -1,3 +1,3 @@
-FROM replicated/vendor-cli:0.44.0
+FROM ttl.sh/jdewinne/replicated:24h
 
 ENTRYPOINT ["/replicated"]
