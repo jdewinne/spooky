@@ -23,13 +23,13 @@ inputs:
     default: '${GITHUB_SHA::7}'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: '../Dockerfile'
   args:
     - release
     - create
     - --promote="${{ inputs.promote-channel }}"
     - --ensure-channel
-    - --yaml-dir=${{ inputs.yaml-dir }}
+    - --yaml-dir="${{ inputs.yaml-dir }}"
     - --version="${{ inputs.version }}"
   env:
     REPLICATED_APP: ${{ inputs.replicated-app }}
