@@ -24,7 +24,6 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  entrypoint: "ls -la"
   args:
     - release
     - create
