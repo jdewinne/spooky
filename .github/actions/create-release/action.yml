@@ -24,6 +24,7 @@ inputs:
 runs:
   using: 'docker'
   image: 'replicated/vendor-cli:0.44.0'
+  entrypoint: 'replicated'
   args:
     - 'release create --promote="${{ inputs.promote-channel }}" --ensure-channel --yaml-dir="${{ inputs.yaml-dir }}" --version="${{ inputs.version }}"'
   env:
