@@ -78,6 +78,7 @@ jobs:
       - name: Wait for Cluster
         id: wait-for-cluster
         uses: ./.github/actions/wait-for-cluster
+        timeout-minutes: 1
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
