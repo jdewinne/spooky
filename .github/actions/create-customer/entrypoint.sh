@@ -1,8 +1,5 @@
-#!/bin/sh
+#!/bin/sh -l
 
-ls -al
-pwd
-./replicated $@ > customer.json
-CUSTOMER_OUTPUT=$(cat customer.json)
+/replicated $@ > customer.json
 
 echo "customer=$CUSTOMER_OUTPUT" >> $GITHUB_OUTPUT
