@@ -1,5 +1,5 @@
-name: 'Replicated get customer license id'
-description: 'Get a Customer License ID'
+name: 'Replicated CLI get customer license id'
+description: 'CLI: Get a Customer License ID'
 inputs:
   replicated-app:
     description: 'Replicated App Slug.'

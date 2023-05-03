@@ -1,5 +1,5 @@
-name: 'Replicated Create Cluster and wait for it to be running'
-description: 'Replicated Create Cluster and wait for it to be running'
+name: 'Replicated Create Cluster'
+description: 'Replicated Create Cluster'
 inputs:
   replicated-app:
     description: 'Replicated App Slug.'

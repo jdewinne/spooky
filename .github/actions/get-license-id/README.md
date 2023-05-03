@@ -1,1 +1,0 @@
-# Get a Customer License ID

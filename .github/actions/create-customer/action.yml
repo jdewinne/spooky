@@ -1,5 +1,5 @@
-name: 'Replicated create customer'
-description: 'Create a Customer'
+name: 'Replicated Create Customer'
+description: 'Replicated Create Customer'
 inputs:
   replicated-app:
     description: 'Replicated App Slug.'
@@ -20,18 +20,25 @@ inputs:
     required: true
     default: '${GITHUB_REF}'
 outputs:
-  customer-id: # id of the customer
-    description: 'Contains the customer id.'
+  license-id: # id of the output
+    description: 'Contains the license id.'
+    value: ${{ steps.cli-get-customer-license-id.outputs.license-id }}
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - customer
-    - create
-    - --name=${{ inputs.customer-name }}
-    - --channel=${{ inputs.channel }}
-    - --email=${{ inputs.customer-email }}
-    - --output=json
-  env:
-    REPLICATED_APP: ${{ inputs.replicated-app }}
-    REPLICATED_API_TOKEN: ${{ inputs.replicated-api-token }}
+  using: "composite"
+  steps:
+    - name: 'Replicated CLI create customer'
+      id: 'cli-create-customer'
+      uses: './.github/actions/cli-create-customer'
+      with:
+        replicated-app: ${{ inputs.replicated-app }}
+        replicated-api-token: ${{ inputs.replicated-api-token }}
+        customer-name: ${{ inputs.customer-name }}
+        customer-email: ${{ inputs.customer-email }}
+        channel: ${{ inputs.channel }}
+    - name: 'Replicated CLI get customer license id'
+      id: 'cli-get-customer-license-id'
+      uses: './.github/actions/cli-get-license-id'
+      with:
+        replicated-app: ${{ inputs.replicated-app }}
+        replicated-api-token: ${{ inputs.replicated-api-token }}
+        customer: ${{ steps.cli-create-customer.outputs.customer-id }}

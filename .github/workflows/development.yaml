@@ -54,13 +54,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Create Customer and Get License ID
-        id: create-customer-and-get-license-id
-        uses: ./.github/actions/create-customer-and-get-license-id
+      - name: Create Customer 
+        id: create-customer
+        uses: ./.github/actions/create-customer
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          customer-name: ${{ github.ref_name }}-${{ matrix.distribution }}
+          customer-name: ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
           channel: ${{ github.ref_name }}
           customer-email: ${{ github.ref_name }}@example.com
 
@@ -76,7 +76,16 @@ jobs:
           name: ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
           ttl: 10m
 
-      - name: Print kubeconfig
-        run: echo "${{ steps.create-cluster.outputs.cluster-kubeconfig }}"
-
-
+      - name: Deploy the app
+        uses: 'vimeda/helm@v1'
+        with:
+          repo: 'registry.replicated.com'
+          repo-alias: replicated
+          repo-username: ${{ github.ref_name }}@example.com
+          repo-password: ${{ steps.create-customer.outputs.license-id }}
+          release: 'relmatrix-app'
+          namespace: 'default'
+          chart: 'oci://registry.replicated.com/${{ secrets.REPLICATED_APP }}/test-1/relmatrix-app'
+          token: '${{ github.token }}'
+        env:
+          KUBECONFIG_FILE: '${{ steps.create-cluster.outputs.cluster-kubeconfig }}'
