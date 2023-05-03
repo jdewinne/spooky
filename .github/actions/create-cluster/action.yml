@@ -54,11 +54,11 @@ runs:
       with:
         replicated-app: ${{ inputs.replicated-app }}
         replicated-api-token: ${{ inputs.replicated-api-token }}
-        cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}
+        cluster-id: ${{ steps.cli-create-cluster.outputs.cluster-id }}
     - name: 'Replicated CLI get kubeconfig'
       id: 'cli-get-kubeconfig'
       uses: './.github/actions/cli-get-kubeconfig'
       with:
         replicated-app: ${{ inputs.replicated-app }}
         replicated-api-token: ${{ inputs.replicated-api-token }}
-        cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}
+        cluster-id: ${{ steps.cli-create-cluster.outputs.cluster-id }}
