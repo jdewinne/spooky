@@ -1,7 +1,10 @@
 #!/bin/sh -l
 
 /replicated cluster kubeconfig --id $CLUSTER_ID
-cat ~/.kube/config
-echo "kubeconfig=$(cat ~/.kube/config)" >> $GITHUB_OUTPUT
+export KUBECONFIG="$(cat ~/.kube/config)"
+KUBECONFIG="${KUBECONFIG//'%'/'%25'}"
+KUBECONFIG="${KUBECONFIG//$'\n'/'%0A'}"
+KUBECONFIG="${KUBECONFIG//$'\r'/'%0D'}"
+echo "kubeconfig=$KUBECONFIG" >> $GITHUB_OUTPUT
 
 cat $GITHUB_OUTPUT
