@@ -1,4 +1,4 @@
 #!/bin/sh -l
 
-replicated $@ > $CUSTOMER_OUTPUT
-echo "customer=$tiCUSTOMER_OUTPUT" >> $GITHUB_OUTPUT
+$CUSTOMER_OUTPUT=$(replicated $@)
+echo "customer=$CUSTOMER_OUTPUT" >> $GITHUB_OUTPUT
