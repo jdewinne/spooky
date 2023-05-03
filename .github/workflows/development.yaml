@@ -49,7 +49,7 @@ jobs:
     needs: push-to-replicated
     strategy:
       matrix:
-        cluster: [ {distribution: kind, version: v1.25.3}, {distribution: k3s, version: v1.26.0}]
+        cluster: [ {distribution: kind, version: v1.25.3}, {distribution: k3s, version: v1.25}]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -75,6 +75,13 @@ jobs:
           name: ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
           ttl: 10m
 
+      - name: Wait for Cluster
+        id: wait-for-cluster
+        uses: ./.github/actions/wait-for-cluster
+        with:
+          replicated-app: ${{ secrets.REPLICATED_APP }}
+          replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}
 
       - name: Echo license id
         run: echo "${{ steps.create-customer-and-get-license-id.outputs.license-id }}"

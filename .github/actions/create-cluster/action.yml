@@ -25,14 +25,17 @@ inputs:
     description: 'Cluster TTL (duration) (default "1h")'
     required: true
     default: '1h'
+outputs:
+  cluster-id: # id of the cluster
+    description: 'Contains the cluster id.'
 runs:
   using: 'docker'
-  image: '../Dockerfile'
+  image: 'Dockerfile'
   args:
     - cluster
     - create
     - --kubernetes-distribution=${{ inputs.kubernetes-distribution }}
-    - --kubernetes-version=${{ inputs.kubernetes-version }}}
+    - --kubernetes-version=${{ inputs.kubernetes-version }}
     - --name=${{ inputs.name }}
     - --ttl=${{ inputs.ttl }}
     - --output=json
