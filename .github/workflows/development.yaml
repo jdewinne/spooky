@@ -14,6 +14,8 @@ on:
 jobs:
   push-to-replicated:
     runs-on: ubuntu-22.04
+    outputs:
+      version: ${{ steps.get_version.outputs.version-without-v }}
     steps:
       - uses: actions/checkout@v3
 
@@ -85,4 +87,5 @@ jobs:
           registry-password: ${{ steps.create-customer.outputs.license-id }}
           chart: oci://registry.replicated.com/${{ secrets.REPLICATED_APP }}/test-1/relmatrix-app
           name: 'relmatrix-app'
+          version: 0.0.1-${{ needs.push-to-replicated.outputs.version }}
           namespace: 'default'
