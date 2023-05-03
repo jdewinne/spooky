@@ -22,7 +22,7 @@ inputs:
 outputs:
   license-id: # id of the output
     description: 'Contains the license id.'
-    value: ${{ steps.download-customer-license.outputs.license-id }}
+    value: ${{ steps.get-customer-license-id.outputs.license-id }}
 runs:
   using: "composite"
   steps:
