@@ -95,11 +95,9 @@ jobs:
 
       - name: Run a test
         # mask the kubeconfig so it doesn't show up in the logs
-        env:
-          CLUSTER-KUBECONFIG: ${{ steps.create-cluster.outputs.cluster-kubeconfig }}
         run: |
           echo "Running a test"
-          echo "$CLUSTER-KUBECONFIG" > kubeconfig.yaml
+          echo "${{ steps.create-cluster.outputs.cluster-kubeconfig }}" > kubeconfig.yaml
           sleep 60
           kubectl port-forward svc/relmatrix-app --pod-running-timeout=2m --kubeconfig='./kubeconfig.yaml' 8080:80 &
           sleep 120
