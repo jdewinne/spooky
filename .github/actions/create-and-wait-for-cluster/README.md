@@ -1,1 +1,0 @@
-# Create a cluster and wait for it to be in a running state.

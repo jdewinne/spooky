@@ -1,5 +1,5 @@
-name: 'Replicated create Cluster'
-description: 'Create a k8s cluster'
+name: 'Replicated Create Cluster and wait for it to be running'
+description: 'Replicated Create Cluster and wait for it to be running'
 inputs:
   replicated-app:
     description: 'Replicated App Slug.'
@@ -28,17 +28,37 @@ inputs:
 outputs:
   cluster-id: # id of the cluster
     description: 'Contains the cluster id.'
+    value: ${{ steps.cli-create-cluster.outputs.cluster-id }}
+  cluster-status: # status of the cluster
+    description: 'Contains the cluster status.'
+    value: ${{ steps.cli-wait-for-cluster.outputs.cluster-status }}
+  cluster-kubeconfig: # kubeconfig of the cluster
+    description: 'Contains the cluster status.'
+    value: ${{ steps.cli-get-kubeconfig.outputs.kubeconfig }}
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - cluster
-    - create
-    - --kubernetes-distribution=${{ inputs.kubernetes-distribution }}
-    - --kubernetes-version=${{ inputs.kubernetes-version }}
-    - --name=${{ inputs.name }}
-    - --ttl=${{ inputs.ttl }}
-    - --output=json
-  env:
-    REPLICATED_APP: ${{ inputs.replicated-app }}
-    REPLICATED_API_TOKEN: ${{ inputs.replicated-api-token }}
+  using: "composite"
+  steps:
+    - name: 'Replicated CLI create cluster'
+      id: 'cli-create-cluster'
+      uses: './.github/actions/cli-create-cluster'
+      with:
+        replicated-app: ${{ inputs.replicated-app }}
+        replicated-api-token: ${{ inputs.replicated-api-token }}
+        kubernetes-distribution: ${{ inputs.kubernetes-distribution }}
+        kubernetes-version: ${{ inputs.kubernetes-version }}
+        name: ${{ inputs.name }}
+        ttl: ${{ inputs.ttl }}
+    - name: 'Replicated CLI wait for cluster'
+      id: 'cli-wait-for-cluster'
+      uses: './.github/actions/cli-wait-for-cluster'
+      with:
+        replicated-app: ${{ inputs.replicated-app }}
+        replicated-api-token: ${{ inputs.replicated-api-token }}
+        cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}
+    - name: 'Replicated CLI get kubeconfig'
+      id: 'cli-get-kubeconfig'
+      uses: './.github/actions/cli-get-kubeconfig'
+      with:
+        replicated-app: ${{ inputs.replicated-app }}
+        replicated-api-token: ${{ inputs.replicated-api-token }}
+        cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}

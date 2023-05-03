@@ -1,5 +1,5 @@
-name: 'Replicated wait for Cluster'
-description: 'Wait for a cluster to be running'
+name: 'Replicated CLI get kubeconfig for cluster'
+description: 'CLI: Replicated get kubeconfig for cluster'
 inputs:
   replicated-app:
     description: 'Replicated App Slug.'
@@ -10,11 +10,11 @@ inputs:
     required: true
     default: ''
   cluster-id:
-    description: 'Cluster id to wait for to be running'
+    description: 'Cluster id to get kubeconfig for.'
     required: true
 outputs:
-  cluster-status: # status of the cluster
-    description: 'Contains the cluster status.'
+  kubeconfig: # kubeconfig for the cluster
+    description: 'Kubeconfig for the cluster.'
 runs:
   using: 'docker'
   image: 'Dockerfile'

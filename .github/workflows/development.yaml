@@ -64,9 +64,9 @@ jobs:
           channel: ${{ github.ref_name }}
           customer-email: ${{ github.ref_name }}@example.com
 
-      - name: Create and Wait for Cluster
-        id: create-and-wait-for-cluster
-        uses: ./.github/actions/create-and-wait-for-cluster
+      - name: Create Cluster
+        id: create-cluster
+        uses: ./.github/actions/create-cluster
         timeout-minutes: 2
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
@@ -76,12 +76,7 @@ jobs:
           name: ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
           ttl: 10m
 
-      - name: Get kubeconfig
-        id: get-kubeconfig
-        uses: ./.github/actions/get-kubeconfig
-        with:
-          replicated-app: ${{ secrets.REPLICATED_APP }}
-          replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          cluster-id: ${{ steps.create-and-wait-for-cluster.outputs.cluster-id }}
+      - name: Print kubeconfig
+        run: echo "${{ steps.create-cluster.cluster-kubeconfig }}"
 
 

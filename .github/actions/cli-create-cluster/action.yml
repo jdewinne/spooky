@@ -1,0 +1,44 @@
+name: 'Replicated CLI create Cluster'
+description: 'CLI: Create a k8s cluster'
+inputs:
+  replicated-app:
+    description: 'Replicated App Slug.'
+    required: true
+    default: ''
+  replicated-api-token:
+    description: 'Replicated API Token.'
+    required: true
+    default: ''
+  kubernetes-distribution:
+    description: 'Kubernetes distribution of the cluster to provision (default "kind")'
+    required: true
+    default: 'kind'
+  kubernetes-version:
+    description: 'Kubernetes version to provision (format is distribution dependent) (default "v1.25.3")'
+    required: true
+    default: 'v1.25.3"'
+  name:
+    description: 'Name of the cluster to provision'
+    required: true
+    default: ''
+  ttl:
+    description: 'Cluster TTL (duration) (default "1h")'
+    required: true
+    default: '1h'
+outputs:
+  cluster-id: # id of the cluster
+    description: 'Contains the cluster id.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - cluster
+    - create
+    - --kubernetes-distribution=${{ inputs.kubernetes-distribution }}
+    - --kubernetes-version=${{ inputs.kubernetes-version }}
+    - --name=${{ inputs.name }}
+    - --ttl=${{ inputs.ttl }}
+    - --output=json
+  env:
+    REPLICATED_APP: ${{ inputs.replicated-app }}
+    REPLICATED_API_TOKEN: ${{ inputs.replicated-api-token }}
