@@ -85,5 +85,4 @@ jobs:
           registry-password: ${{ steps.create-customer.outputs.license-id }}
           chart: oci://registry.replicated.com/${{ secrets.REPLICATED_APP }}/test-1/relmatrix-app
           name: 'relmatrix-app'
-          version: 0.0.1-${{ steps.get_version.outputs.version-without-v }}
           namespace: 'default'
