@@ -77,15 +77,13 @@ jobs:
           ttl: 10m
 
       - name: Deploy the app
-        uses: 'vimeda/helm@v1'
+        uses: ./.github/actions/install-chart
         with:
-          repo: 'registry.replicated.com'
-          repo-alias: replicated
-          repo-username: ${{ github.ref_name }}@example.com
-          repo-password: ${{ steps.create-customer.outputs.license-id }}
-          release: 'relmatrix-app'
+          kubeconfig: ${{ steps.create-cluster.outputs.cluster-kubeconfig }}
+          helm-path: "helm"
+          registry-username: ${{ github.ref_name }}@example.com
+          registry-password: ${{ steps.create-customer.outputs.license-id }}
+          chart: oci://registry.replicated.com/${{ secrets.REPLICATED_APP }}/test-1/relmatrix-app
+          name: 'relmatrix-app'
+          version: 0.0.1-${{ steps.get_version.outputs.version-without-v }}
           namespace: 'default'
-          chart: 'oci://registry.replicated.com/${{ secrets.REPLICATED_APP }}/test-1/relmatrix-app'
-          token: '${{ github.token }}'
-        env:
-          KUBECONFIG_FILE: '${{ steps.create-cluster.outputs.cluster-kubeconfig }}'
