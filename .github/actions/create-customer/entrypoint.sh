@@ -1,6 +1,7 @@
-#!/bin/sh -l
+#!/bin/sh
 
-
+ls -al
+pwd
 ./replicated $@ > customer.json
 CUSTOMER_OUTPUT=$(cat customer.json)
 
