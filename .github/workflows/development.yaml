@@ -65,6 +65,6 @@ jobs:
           customer-email: ${{ github.ref_name }}@example.com
 
       - name: Echo license id
-        run: echo "${{ steps.create-customer-and-get-license-id.outputs.license-id}}"
+        run: echo "${{ steps.create-customer-and-get-license-id.outputs.license-id }}"
 
 
