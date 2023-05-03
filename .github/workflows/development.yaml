@@ -49,7 +49,7 @@ jobs:
     needs: push-to-replicated
     strategy:
       matrix:
-        distribution: ['kind/v1.25.3', 'k3s/v1.26.0']
+        cluster: [ {distribution: kind, version: v1.25.3}, {distribution: k3s, version: v1.26.0}]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -63,6 +63,18 @@ jobs:
           customer-name: ${{ github.ref_name }}-${{ matrix.distribution }}
           channel: ${{ github.ref_name }}
           customer-email: ${{ github.ref_name }}@example.com
+
+      - name: Create Cluster
+        id: create-cluster
+        uses: ./.github/actions/create-cluster
+        with:
+          replicated-app: ${{ secrets.REPLICATED_APP }}
+          replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          kubernetes-distribution: ${{ matrix.cluster.distribution }}
+          kubernetes-version: ${{ matrix.cluster.version }}
+          name: ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
+          ttl: 10m
+
 
       - name: Echo license id
         run: echo "${{ steps.create-customer-and-get-license-id.outputs.license-id }}"
