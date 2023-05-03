@@ -96,10 +96,8 @@ jobs:
       - name: Run a test
         run: |
           echo "Running a test"
-          echo $INPUT_KUBECONFIG > kubeconfig.yaml
+          echo ${{ steps.create-cluster.outputs.cluster-kubeconfig }} > kubeconfig.yaml
           kubectl port-forward svc/relmatrix-app --pod-running-timeout=2m --kubeconfig='./kubeconfig.yaml' 8080:80 &
           sleep 120
           curl -f http://localhost:8080
           echo "Test complete"
-        with:
-          kubeconfig: ${{ steps.create-cluster.outputs.cluster-kubeconfig }}
