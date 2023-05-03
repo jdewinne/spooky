@@ -89,3 +89,11 @@ jobs:
           name: 'relmatrix-app'
           version: 0.0.1-${{ needs.push-to-replicated.outputs.version }}
           namespace: 'default'
+
+      - name: Run a test
+        run: |
+          echo "Running a test"
+          kubectl port-forward svc/relmatrix-app --pod-running-timeout=2m 8080:80 &
+          sleep 120
+          curl -f http://localhost:8080
+          echo "Test complete"
