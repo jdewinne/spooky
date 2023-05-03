@@ -35,15 +35,10 @@ runs:
         customer-name: ${{ inputs.customer-name }}
         customer-email: ${{ inputs.customer-email }}
         channel: ${{ inputs.channel }}
-    - name: Get Customer Id
-      id: get-customer-id
-      shell: bash
-      run: |
-        echo "::set-output name=customer-id::$(echo '${{ steps.create-customer.outputs.customer }}' | jq -r '.id')"
     - name: 'Replicated download customer license'
       id: 'download-customer-license'
       uses: './.github/actions/download-license'
       with:
         replicated-app: ${{ inputs.replicated-app }}
         replicated-api-token: ${{ inputs.replicated-api-token }}
-        customer: ${{ steps.get-customer-id.outputs.customer-id }}
+        customer: ${{ steps.create-customer.outputs.customer-id }}

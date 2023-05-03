@@ -20,8 +20,8 @@ inputs:
     required: true
     default: '${GITHUB_REF}'
 outputs:
-  customer: # id of the output
-    description: 'Contains the yaml license.'
+  customer-id: # id of the customer
+    description: 'Contains the customer id.'
 runs:
   using: 'docker'
   image: 'Dockerfile'

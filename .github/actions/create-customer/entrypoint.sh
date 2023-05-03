@@ -2,7 +2,7 @@
 
 /replicated $@ > customer.json
 
-CUSTOMER_OUTPUT=$(cat customer.json)
-echo "customer=$CUSTOMER_OUTPUT" >> $GITHUB_OUTPUT
+CUSTOMER_ID=$(cat customer.json | jq -r '.id')
+echo "customer-id=$CUSTOMER_ID" >> $GITHUB_OUTPUT
 
 cat $GITHUB_OUTPUT
