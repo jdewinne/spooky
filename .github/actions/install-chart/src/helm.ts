@@ -19,7 +19,7 @@ export async function login(helmPath: string, username: string, password: string
         core.info(data.toString());
       },
       stderr: (data: Buffer) => {
-        core.error(data.toString());
+        core.info(data.toString());
       }
     };
 
@@ -52,7 +52,7 @@ export async function installChart(helmPath: string, valuesPath: string) {
         core.info(data.toString());
       },
       stderr: (data: Buffer) => {
-        core.error(data.toString());
+        core.info(data.toString());
       }
     };
 
