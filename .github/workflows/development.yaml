@@ -77,6 +77,6 @@ jobs:
           ttl: 10m
 
       - name: Print kubeconfig
-        run: echo "${{ steps.create-cluster.cluster-kubeconfig }}"
+        run: echo "${{ steps.create-cluster.outputs.cluster-kubeconfig }}"
 
 
