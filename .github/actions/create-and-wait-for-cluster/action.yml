@@ -28,7 +28,7 @@ inputs:
 outputs:
   cluster-id: # id of the cluster
     description: 'Contains the cluster id.'
-    value: ${{ steps.create-cluster.outputs.license-id }}
+    value: ${{ steps.create-cluster.outputs.cluster-id }}
   cluster-status: # status of the cluster
     description: 'Contains the cluster status.'
     value: ${{ steps.wait-for-cluster.outputs.cluster-status }}
