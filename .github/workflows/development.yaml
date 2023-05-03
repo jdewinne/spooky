@@ -54,9 +54,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Create Customer and Download License
-        id: create-customer-and-download-license
-        uses: ./.github/actions/create-customer-and-download-license
+      - name: Create Customer and Get License ID
+        id: create-customer-and-get-license-id
+        uses: ./.github/actions/create-customer-and-get-license-id
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
@@ -64,7 +64,7 @@ jobs:
           channel: ${{ github.ref_name }}
           customer-email: ${{ github.ref_name }}@example.com
 
-      - name: Echo license's content
-        run: echo "${{ steps.create-customer-and-download-license.outputs.license }}" | jq .
+      - name: Echo license id
+        run: echo "${{ steps.create-customer-and-get-license-id.outputs.license-id}}"
 
 

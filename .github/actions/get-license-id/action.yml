@@ -1,5 +1,5 @@
-name: 'Replicated download customer license'
-description: 'Download a Customer License'
+name: 'Replicated get customer license id'
+description: 'Get a Customer License ID'
 inputs:
   replicated-app:
     description: 'Replicated App Slug.'
@@ -13,11 +13,11 @@ inputs:
     description: 'The Customer Name or ID'
     required: true
 outputs:
-  license: # id of the output
-    description: 'Contains the yaml license.'
+  license-id: # id of the output
+    description: 'Contains the license id.'
 runs:
   using: 'docker'
-  image: '../Dockerfile'
+  image: 'Dockerfile'
   args:
     - customer
     - download-license

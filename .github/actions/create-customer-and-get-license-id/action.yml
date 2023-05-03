@@ -20,9 +20,9 @@ inputs:
     required: true
     default: '${GITHUB_REF}'
 outputs:
-  license: # id of the output
-    description: 'Contains the yaml license.'
-    value: ${{ steps.download-customer-license.outputs.license }}
+  license-id: # id of the output
+    description: 'Contains the license id.'
+    value: ${{ steps.download-customer-license.outputs.license-id }}
 runs:
   using: "composite"
   steps:
@@ -35,9 +35,9 @@ runs:
         customer-name: ${{ inputs.customer-name }}
         customer-email: ${{ inputs.customer-email }}
         channel: ${{ inputs.channel }}
-    - name: 'Replicated download customer license'
-      id: 'download-customer-license'
-      uses: './.github/actions/download-license'
+    - name: 'Replicated get customer license id'
+      id: 'get-customer-license-id'
+      uses: './.github/actions/get-license-id'
       with:
         replicated-app: ${{ inputs.replicated-app }}
         replicated-api-token: ${{ inputs.replicated-api-token }}

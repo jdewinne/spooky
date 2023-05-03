@@ -4,5 +4,3 @@
 
 CUSTOMER_ID=$(cat customer.json | jq -r '.id')
 echo "customer-id=$CUSTOMER_ID" >> $GITHUB_OUTPUT
-
-cat $GITHUB_OUTPUT

@@ -1,0 +1,1 @@
+# Create a Customer and get the corresponding license id
