@@ -1,0 +1,28 @@
+name: 'Replicated CLI inspect Channel'
+description: 'CLI: Inspect a channel'
+inputs:
+  replicated-app:
+    description: 'Replicated App Slug.'
+    required: true
+    default: ''
+  replicated-api-token:
+    description: 'Replicated API Token.'
+    required: true
+    default: ''
+  channel-name:
+    description: 'The name of the channel to inspect.'
+    required: true
+outputs:
+  channel-id: # id of the channel
+    description: 'Contains the channel id.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - channel
+    - inspect
+    - ${{ inputs.channel-name }}
+    - --output=json
+  env:
+    REPLICATED_APP: ${{ inputs.replicated-app }}
+    REPLICATED_API_TOKEN: ${{ inputs.replicated-api-token }}
