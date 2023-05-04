@@ -9,16 +9,23 @@ inputs:
     description: 'Replicated API Token.'
     required: true
     default: ''
-  channel:
-    description: 'The Channel Name or ID.'
+  channel-name:
+    description: 'The name of the Channel to archive.'
     required: true
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - channel
-    - archive
-    - --channel=${{ inputs.channel }}
-  env:
-    REPLICATED_APP: ${{ inputs.replicated-app }}
-    REPLICATED_API_TOKEN: ${{ inputs.replicated-api-token }}
+  using: "composite"
+  steps:
+  - name: 'CLI: Inspect a channel'
+    id: 'cli-inspect-channel'
+    uses: './.github/actions/cli-inspect-channel'
+    with:
+      replicated-app: ${{ inputs.replicated-app }}
+      replicated-api-token: ${{ inputs.replicated-api-token }}
+      channel-name: ${{ inputs.channel-name }}
+  - name: 'Replicated CLI archive Channel'
+    id: 'cli-archive-channel'
+    uses: './.github/actions/cli-archive-channel'
+    with:
+      replicated-app: ${{ inputs.replicated-app }}
+      replicated-api-token: ${{ inputs.replicated-api-token }}
+      channel-id: ${{ steps.cli-inspect-channel.outputs.channel-id }}
