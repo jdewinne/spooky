@@ -22,4 +22,4 @@ jobs:
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          channel-name: ${{ github.ref_name }}
+          channel-name: ${{ github.event.ref }}
