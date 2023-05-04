@@ -1,0 +1,24 @@
+name: 'Replicated CLI get kubeconfig for cluster'
+description: 'CLI: Replicated get kubeconfig for cluster'
+inputs:
+  replicated-app:
+    description: 'Replicated App Slug.'
+    required: true
+    default: ''
+  replicated-api-token:
+    description: 'Replicated API Token.'
+    required: true
+    default: ''
+  cluster-id:
+    description: 'Cluster id to get kubeconfig for.'
+    required: true
+outputs:
+  kubeconfig: # kubeconfig for the cluster
+    description: 'Kubeconfig for the cluster.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    REPLICATED_APP: ${{ inputs.replicated-app }}
+    REPLICATED_API_TOKEN: ${{ inputs.replicated-api-token }}
+    CLUSTER_ID: ${{ inputs.cluster-id }}

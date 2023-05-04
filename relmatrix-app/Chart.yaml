@@ -1,6 +1,10 @@
 apiVersion: v2
 name: relmatrix-app
 description: A Helm chart for Kubernetes
+dependencies:
+- name: kots-sdk
+  repository: oci://registry.staging.replicated.com/library
+  version: 0.0.1-alpha.7
 
 # A chart can be either an 'application' or a 'library' chart.
 #
