@@ -50,6 +50,7 @@ jobs:
   reliability_matrix:
     needs: push-to-replicated
     strategy:
+      fail-fast: false
       matrix:
         cluster: [ {distribution: kind, version: v1.25.3}, {distribution: kind, version: v1.25.2}]
     runs-on: ubuntu-22.04
@@ -85,7 +86,7 @@ jobs:
           helm-path: "helm"
           registry-username: ${{ github.ref_name }}@example.com
           registry-password: ${{ steps.create-customer.outputs.license-id }}
-          chart: oci://registry.replicated.com/${{ secrets.REPLICATED_APP }}/test-1/relmatrix-app
+          chart: oci://registry.replicated.com/${{ secrets.REPLICATED_APP }}/${{ github.ref_name }}/relmatrix-app
           name: 'relmatrix-app'
           version: 0.0.1-${{ needs.push-to-replicated.outputs.version }}
           namespace: 'default'
@@ -119,5 +120,5 @@ jobs:
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          customer:  ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
+          customer:  ${{ steps.create-customer.outputs.customer-id }}
           
