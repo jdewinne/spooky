@@ -1,0 +1,24 @@
+name: 'Replicated archive Channel'
+description: 'Archive a channel'
+inputs:
+  replicated-app:
+    description: 'Replicated App Slug.'
+    required: true
+    default: ''
+  replicated-api-token:
+    description: 'Replicated API Token.'
+    required: true
+    default: ''
+  channel:
+    description: 'The Channel Name or ID.'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - channel
+    - archive
+    - --channel=${{ inputs.channel }}
+  env:
+    REPLICATED_APP: ${{ inputs.replicated-app }}
+    REPLICATED_API_TOKEN: ${{ inputs.replicated-api-token }}

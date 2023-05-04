@@ -1,0 +1,23 @@
+name: delete
+
+## This is a test version of the workflow
+## against a non-production environment
+
+on:
+  delete:
+    branches:
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
+      - '!main'     # excludes main
+
+jobs:
+  cleanup-channel:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Archive Replicated Channel
+        uses: ./.github/actions/archive-channel
+        with:
+          replicated-app: ${{ secrets.REPLICATED_APP }}
+          replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          channel: ${{ github.ref_name }}
