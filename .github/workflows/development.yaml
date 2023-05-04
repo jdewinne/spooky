@@ -120,5 +120,5 @@ jobs:
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          customer:  ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
+          customer:  ${{ steps.create-customer.outputs.customer-id }}
           

@@ -20,7 +20,10 @@ inputs:
     required: true
     default: '${GITHUB_REF}'
 outputs:
-  license-id: # id of the output
+  customer-id: # id of the customer
+    description: 'Contains the customer id.'
+    value: ${{ steps.cli-create-customer.outputs.customer-id }}
+  license-id: # id of the license
     description: 'Contains the license id.'
     value: ${{ steps.cli-get-customer-license-id.outputs.license-id }}
 runs:
