@@ -38,6 +38,7 @@ jobs:
           version: ${{ github.ref_name }}
 
       - name: Inspect the Channel
+        id: inspect-channel
         uses: jdewinne/gh-actions/cli-inspect-channel@v0.0.4
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
