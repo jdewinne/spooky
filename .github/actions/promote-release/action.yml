@@ -1,0 +1,46 @@
+name: 'Replicated promote Release'
+description: 'Promote a Release to a Channel'
+inputs:
+  replicated-app:
+    description: 'Replicated App Slug.'
+    required: true
+    default: ''
+  replicated-api-token:
+    description: 'Replicated API Token.'
+    required: true
+    default: ''
+  channel-from:
+    description: 'The name of the Channel to get the release sequence from.'
+    required: true
+  channel-to:
+    description: 'The name of the Channel to promote the release sequence to.'
+    required: true
+  release-version:
+    description: 'The version field of the Release to promote.'
+    required: true
+runs:
+  using: "composite"
+  steps:
+  - name: 'CLI: Inspect from channel'
+    id: 'cli-inspect-from-channel'
+    uses: jdewinne/gh-actions/cli-inspect-channel@v0.0.3
+    with:
+      replicated-app: ${{ inputs.replicated-app }}
+      replicated-api-token: ${{ inputs.replicated-api-token }}
+      channel-name: ${{ inputs.channel-from }}
+  - name: 'CLI: Inspect to channel'
+    id: 'cli-inspect-to-channel'
+    uses: jdewinne/gh-actions/cli-inspect-channel@v0.0.3
+    with:
+      replicated-app: ${{ inputs.replicated-app }}
+      replicated-api-token: ${{ inputs.replicated-api-token }}
+      channel-name: ${{ inputs.channel-to }}
+  - name: 'Replicated CLI promote Release'
+    id: 'cli-promote-release'
+    uses: jdewinne/gh-actions/cli-promote-release@v0.0.3
+    with:
+      replicated-app: ${{ inputs.replicated-app }}
+      replicated-api-token: ${{ inputs.replicated-api-token }}
+      release-sequence: ${{ steps.cli-inspect-from-channel.outputs.release-sequence }}
+      channel-id: ${{ steps.cli-inspect-to-channel.outputs.channel-id }}
+      version: ${{ inputs.release-version }}
