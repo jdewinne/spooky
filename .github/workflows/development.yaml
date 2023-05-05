@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-22.04
     outputs:
       version: ${{ steps.get_version.outputs.version-without-v }}
+      channel-slug: ${{ steps.inspect-channel.outputs.channel-slug}}
     steps:
       - uses: actions/checkout@v3
 
@@ -46,6 +47,14 @@ jobs:
           yaml-dir: ./kots
           promote-channel: ${{ github.ref_name }}
           version: 0.0.1-${{ steps.get_version.outputs.version-without-v }}
+
+      - name: Inspect the Channel
+        id: inspect-channel
+        uses: jdewinne/gh-actions/cli-inspect-channel@v0.0.4
+        with:
+          replicated-app: ${{ secrets.REPLICATED_APP }}
+          replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          channel-name: ${{ github.ref_name }}
 
   reliability_matrix:
     needs: push-to-replicated
@@ -86,7 +95,7 @@ jobs:
           helm-path: "helm"
           registry-username: ${{ github.ref_name }}@example.com
           registry-password: ${{ steps.create-customer.outputs.license-id }}
-          chart: oci://registry.replicated.com/${{ secrets.REPLICATED_APP }}/${{ github.ref_name }}/relmatrix-app
+          chart: oci://registry.replicated.com/${{ secrets.REPLICATED_APP }}/${{ needs.push-to-replicated.outputs.channel-slug }}/relmatrix-app
           name: 'relmatrix-app'
           version: 0.0.1-${{ needs.push-to-replicated.outputs.version }}
           namespace: 'default'
