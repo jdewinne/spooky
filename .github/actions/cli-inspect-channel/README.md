@@ -1,1 +1,0 @@
-# Inspect a channel

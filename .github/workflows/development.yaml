@@ -59,7 +59,7 @@ jobs:
 
       - name: Create Customer 
         id: create-customer
-        uses: jdewinne/test-create-customer-action@v0.0.11
+        uses: ./.github/actions/create-customer
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
