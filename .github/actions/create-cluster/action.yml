@@ -40,7 +40,7 @@ runs:
   steps:
     - name: 'Replicated CLI create cluster'
       id: 'cli-create-cluster'
-      uses: './.github/actions/cli-create-cluster'
+      uses: jdewinne/gh-actions/cli-create-cluster@v0.0.2
       with:
         replicated-app: ${{ inputs.replicated-app }}
         replicated-api-token: ${{ inputs.replicated-api-token }}
@@ -50,14 +50,14 @@ runs:
         ttl: ${{ inputs.ttl }}
     - name: 'Replicated CLI wait for cluster'
       id: 'cli-wait-for-cluster'
-      uses: './.github/actions/cli-wait-for-cluster'
+      uses: jdewinne/gh-actions/cli-wait-for-cluster@v0.0.2
       with:
         replicated-app: ${{ inputs.replicated-app }}
         replicated-api-token: ${{ inputs.replicated-api-token }}
         cluster-id: ${{ steps.cli-create-cluster.outputs.cluster-id }}
     - name: 'Replicated CLI get kubeconfig'
       id: 'cli-get-kubeconfig'
-      uses: './.github/actions/cli-get-kubeconfig'
+      uses: jdewinne/gh-actions/cli-get-kubeconfig@v0.0.2
       with:
         replicated-app: ${{ inputs.replicated-app }}
         replicated-api-token: ${{ inputs.replicated-api-token }}
