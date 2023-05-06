@@ -17,7 +17,7 @@ runs:
   steps:
   - name: 'Inspect a channel'
     id: 'inspect-channel'
-    uses: replicatedhq/reliability-actions-lib/inspect-channel@v0.0.1-alpha.4
+    uses: replicatedhq/reliability-actions-lib/inspect-channel@v0.0.1-alpha.5
     with:
       replicated-app: ${{ inputs.replicated-app }}
       replicated-api-token: ${{ inputs.replicated-api-token }}
