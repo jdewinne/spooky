@@ -23,14 +23,14 @@ runs:
   steps:
   - name: 'Inspect from channel'
     id: 'inspect-from-channel'
-    uses: replicatedhq/reliability-actions-lib/inspect-channel@v0.0.1-alpha.4
+    uses: replicatedhq/reliability-actions-lib/inspect-channel@v0.0.1-alpha.5
     with:
       replicated-app: ${{ inputs.replicated-app }}
       replicated-api-token: ${{ inputs.replicated-api-token }}
       channel-name: ${{ inputs.channel-from }}
   - name: 'Inspect to channel'
     id: 'inspect-to-channel'
-    uses: replicatedhq/reliability-actions-lib/inspect-channel@v0.0.1-alpha.4
+    uses: replicatedhq/reliability-actions-lib/inspect-channel@v0.0.1-alpha.5
     with:
       replicated-app: ${{ inputs.replicated-app }}
       replicated-api-token: ${{ inputs.replicated-api-token }}
