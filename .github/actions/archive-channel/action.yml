@@ -15,9 +15,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - name: 'CLI: Inspect a channel'
-    id: 'cli-inspect-channel'
-    uses: jdewinne/gh-actions/cli-inspect-channel@v0.0.4
+  - name: 'Inspect a channel'
+    id: 'inspect-channel'
+    uses: replicatedhq/reliability-actions-lib/inspect-channel@v0.0.1-alpha.4
     with:
       replicated-app: ${{ inputs.replicated-app }}
       replicated-api-token: ${{ inputs.replicated-api-token }}
@@ -28,4 +28,4 @@ runs:
     with:
       replicated-app: ${{ inputs.replicated-app }}
       replicated-api-token: ${{ inputs.replicated-api-token }}
-      channel-id: ${{ steps.cli-inspect-channel.outputs.channel-id }}
+      channel-id: ${{ steps.inspect-channel.outputs.channel-id }}
