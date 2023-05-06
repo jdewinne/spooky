@@ -21,16 +21,16 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - name: 'CLI: Inspect from channel'
-    id: 'cli-inspect-from-channel'
-    uses: jdewinne/gh-actions/cli-inspect-channel@v0.0.3
+  - name: 'Inspect from channel'
+    id: 'inspect-from-channel'
+    uses: replicatedhq/reliability-actions-lib/inspect-channel@v0.0.1-alpha.4
     with:
       replicated-app: ${{ inputs.replicated-app }}
       replicated-api-token: ${{ inputs.replicated-api-token }}
       channel-name: ${{ inputs.channel-from }}
-  - name: 'CLI: Inspect to channel'
-    id: 'cli-inspect-to-channel'
-    uses: jdewinne/gh-actions/cli-inspect-channel@v0.0.3
+  - name: 'Inspect to channel'
+    id: 'inspect-to-channel'
+    uses: replicatedhq/reliability-actions-lib/inspect-channel@v0.0.1-alpha.4
     with:
       replicated-app: ${{ inputs.replicated-app }}
       replicated-api-token: ${{ inputs.replicated-api-token }}
@@ -41,6 +41,6 @@ runs:
     with:
       replicated-app: ${{ inputs.replicated-app }}
       replicated-api-token: ${{ inputs.replicated-api-token }}
-      release-sequence: ${{ steps.cli-inspect-from-channel.outputs.release-sequence }}
-      channel-id: ${{ steps.cli-inspect-to-channel.outputs.channel-id }}
+      release-sequence: ${{ steps.inspect-from-channel.outputs.release-sequence }}
+      channel-id: ${{ steps.inspect-to-channel.outputs.channel-id }}
       version: ${{ inputs.release-version }}
