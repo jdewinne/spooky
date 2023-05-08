@@ -61,12 +61,12 @@ jobs:
 
       - name: Create Customer 
         id: create-customer
-        uses: ./.github/actions/create-customer
+        uses: replicatedhq/reliability-actions/create-customer@v0.0.1-alpha.8
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           customer-name: ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
-          channel: ${{ github.ref_name }}
+          channel-name: ${{ github.ref_name }}
           customer-email: ${{ github.ref_name }}@example.com
 
       - name: Create Cluster
