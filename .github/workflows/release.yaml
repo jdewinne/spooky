@@ -107,7 +107,7 @@ jobs:
 
       - name: Archive Customer
         id: archive-customer
-        uses: replicatedhq/reliability-actions/create-release@v0.0.1-alpha.6
+        uses: replicatedhq/reliability-actions/archive-customer@v0.0.1-alpha.6
         with:
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           customer-id:  ${{ steps.create-customer.outputs.customer-id }}
