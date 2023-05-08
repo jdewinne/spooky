@@ -30,7 +30,7 @@ jobs:
 
       - name: Create Replicated Release
         id: create-release
-        uses: replicatedhq/reliability-actions/create-release@v0.0.1-alpha.5
+        uses: replicatedhq/reliability-actions/create-release@v0.0.1-alpha.6
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
@@ -107,11 +107,10 @@ jobs:
 
       - name: Archive Customer
         id: archive-customer
-        uses: ./.github/actions/archive-customer
+        uses: replicatedhq/reliability-actions/create-release@v0.0.1-alpha.6
         with:
-          replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          customer:  ${{ steps.create-customer.outputs.customer-id }}
+          customer-id:  ${{ steps.create-customer.outputs.customer-id }}
 
   promote_to_stable:
     needs: reliability_matrix
