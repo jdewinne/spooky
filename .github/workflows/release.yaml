@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-22.04
     outputs:
       channel-slug: ${{ steps.create-release.outputs.channel-slug}}
+      release-sequence: ${{ steps.create-release.outputs.release-sequence}}
     steps:
       - uses: actions/checkout@v3
 
@@ -30,7 +31,7 @@ jobs:
 
       - name: Create Replicated Release
         id: create-release
-        uses: replicatedhq/reliability-actions/create-release@v0.0.1-alpha.15
+        uses: replicatedhq/reliability-actions/create-release@v0.0.1-alpha.16
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
@@ -50,7 +51,7 @@ jobs:
 
       - name: Create Customer 
         id: create-customer
-        uses: replicatedhq/reliability-actions/create-customer@v0.0.1-alpha.15
+        uses: replicatedhq/reliability-actions/create-customer@v0.0.1-alpha.16
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
@@ -60,7 +61,7 @@ jobs:
 
       - name: Create Cluster
         id: create-cluster
-        uses: replicatedhq/reliability-actions/create-cluster@v0.0.1-alpha.15
+        uses: replicatedhq/reliability-actions/create-cluster@v0.0.1-alpha.16
         timeout-minutes: 2
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
@@ -71,7 +72,7 @@ jobs:
           ttl: 10m
 
       - name: Deploy the app
-        uses: replicatedhq/reliability-actions/install-chart@v0.0.1-alpha.15
+        uses: replicatedhq/reliability-actions/install-chart@v0.0.1-alpha.16
         with:
           kubeconfig: ${{ steps.create-cluster.outputs.cluster-kubeconfig }}
           helm-path: "helm"
@@ -98,7 +99,7 @@ jobs:
 
       - name: Remove Cluster
         id: remove-cluster
-        uses: replicatedhq/reliability-actions/remove-cluster@v0.0.1-alpha.15
+        uses: replicatedhq/reliability-actions/remove-cluster@v0.0.1-alpha.16
         continue-on-error: true # It could be that the cluster is already removed
         with:
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
@@ -106,25 +107,26 @@ jobs:
 
       - name: Archive Customer
         id: archive-customer
-        uses: replicatedhq/reliability-actions/archive-customer@v0.0.1-alpha.15
+        uses: replicatedhq/reliability-actions/archive-customer@v0.0.1-alpha.16
         with:
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           customer-id:  ${{ steps.create-customer.outputs.customer-id }}
 
   promote_to_stable:
-    needs: reliability_matrix
+    needs: 
+      - reliability_matrix
+      - push-to-replicated
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
 
       - name: Promoto to Stable channel
-        uses: ./.github/actions/promote-release
+        uses: replicatedhq/reliability-actions/archive-customer@v0.0.1-alpha.16
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          channel-from: ${{ github.ref_name }}
           channel-to: Stable
-          version: ${{ github.ref_name }}
+          release-sequence: ${{ needs.push-to-replicated.outputs.release-sequence }}
           release-version: ${{ github.ref_name }}
 
   cleanup-channel:
@@ -134,7 +136,7 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Archive Replicated Channel
-        uses: ./.github/actions/archive-channel
+        uses: replicatedhq/reliability-actions/archive-channel@v0.0.1-alpha.16
         with:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
