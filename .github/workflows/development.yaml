@@ -9,7 +9,7 @@ on:
       - '!main'     # excludes main
 
 jobs:
-  push-to-replicated:
+  package-app:
     runs-on: ubuntu-22.04
     outputs:
       channel-slug: ${{ steps.create-release.outputs.channel-slug}}
@@ -31,7 +31,8 @@ jobs:
           replace: '0.0.1-${{ github.ref_name }}'
           regex: false
 
-  compatibility_matrix:
+  compatibility-matrix:
+    needs: package-app
     strategy:
       fail-fast: false
       matrix:
