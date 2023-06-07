@@ -47,7 +47,7 @@ jobs:
           kubernetes-distribution: ${{ matrix.cluster.distribution }}
           kubernetes-version: ${{ matrix.cluster.version }}
           installation-method: helm
-          test-script: test.sh
+          test-script: ./tests/test.sh
           helm-chart-name: relmatrix-app
           helm-values: |
             image:
