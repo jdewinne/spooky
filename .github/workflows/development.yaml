@@ -16,19 +16,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Define App Version
+        shell: bash
+        run: echo "APP_VERSION=0.0.1-${GITHUB_REF_NAME//[^a-zA-Z0-9]/}.${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Package Helm Chart for Replicated
         id: package-helm-chart
         run: |
           helm package relmatrix-app -u -d kots \
             --app-version=0.0.1-${{ github.ref_name }} \
-            --version=0.0.1-${{ github.ref_name }}
+            --version=${{ env.APP_VERSION }}
 
       - name: Update the HelmChart kind
         uses: jacobtomlinson/gha-find-replace@v3
         with:
           include: 'kots/relmatrix-app-chart.yaml'
           find: '$VERSION'
-          replace: '0.0.1-${{ github.ref_name }}'
+          replace: ${{ env.APP_VERSION }}
           regex: false
 
   compatibility-matrix:
