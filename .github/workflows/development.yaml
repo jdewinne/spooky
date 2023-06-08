@@ -10,6 +10,8 @@ on:
 
 jobs:
   matrix-generator:
+    outputs:
+      matrix: ${{ steps.matrix-generator.outputs.matrix}}
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -22,16 +24,12 @@ jobs:
           api-token: ${{ secrets.REPLICATED_DEV_API_TOKEN }}
           replicated-api-endpoint: https://vendor-api-jdewinne.okteto.repldev.com/v3
 
-      - name: Set Matrix
-        id: set-matrix
-        run: |
-          echo "::set-output name=matrix::$(echo '${{ steps.matrix-generator.outputs.matrix }}' | jq -c .)"
   compatibility-matrix:
     needs: matrix-generator
     strategy:
       fail-fast: false
       matrix:
-        cluster: [ {distribution: kind, version: v1.25.3}, {distribution: k3s, version: v1.26}]
+        cluster: ${{ needs.matrix-generator.outputs.matrix }}
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
