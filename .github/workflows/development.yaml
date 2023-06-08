@@ -9,7 +9,24 @@ on:
       - '!main'     # excludes main
 
 jobs:
+  matrix-generator:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Generate Matrix
+        id: matrix-generator
+        uses: replicatedhq/compatibility-actions/matrix-generator@matrix-generator
+        with:
+          app-slug: ${{ secrets.REPLICATED_APP }}
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+
+      - name: Set Matrix
+        id: set-matrix
+        run: |
+          echo "::set-output name=matrix::$(echo '${{ steps.matrix-generator.outputs.matrix }}' | jq -c .)"
   compatibility-matrix:
+    needs: matrix-generator
     strategy:
       fail-fast: false
       matrix:
@@ -39,7 +56,7 @@ jobs:
 
       - name: Smoke Test
         id: smoke-test
-        uses: replicatedhq/compatibility-actions/smoke-test@smoke-test
+        uses: replicatedhq/compatibility-actions/smoke-test@v0
         with:
           app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
