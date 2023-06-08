@@ -18,8 +18,9 @@ jobs:
         id: matrix-generator
         uses: replicatedhq/compatibility-actions/matrix-generator@matrix-generator
         with:
-          app-slug: ${{ secrets.REPLICATED_APP }}
-          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          app-slug: ${{ secrets.REPLICATED_DEV_APP }}
+          api-token: ${{ secrets.REPLICATED_DEV_API_TOKEN }}
+          replicated-api-endpoint: https://vendor-api-jdewinne.okteto.repldev.com/v3
 
       - name: Set Matrix
         id: set-matrix
