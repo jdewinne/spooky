@@ -1,11 +1,11 @@
 apiVersion: kots.io/v1beta1
 kind: HelmChart
 metadata:
-  name: relmatrix
+  name: spooky-app
 spec:
   # chart identifies a matching chart from a .tgz
   chart:
-    name: relmatrix-app
+    name: spooky-app
     chartVersion: $VERSION
 
   # helmVersion identifies the Helm Version used to render the Chart. Default is v2.
