@@ -15,6 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Define App Version
+        run: echo "APP_VERSION=0.0.1-${GITHUB_REF_NAME//[^a-zA-Z0-9]/}.${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Define Channel Name
         run: echo "CHANNEL_NAME=${{ github.ref_name }}-${GITHUB_SHA::7}" >> $GITHUB_ENV
 
@@ -22,15 +25,15 @@ jobs:
         id: package-helm-chart
         run: |
           helm package spooky-app -u -d kots \
-            --app-version=${{ github.ref_name }} \
-            --version=${{ github.ref_name }}
+            --app-version=${{ env.APP_VERSION }} \
+            --version=${{ env.APP_VERSION }}
 
       - name: Update the HelmChart kind
         uses: jacobtomlinson/gha-find-replace@v3
         with:
           include: 'kots/spooky-app-chart.yaml'
           find: '$VERSION'
-          replace: '${{ github.ref_name }}'
+          replace: '${{ env.APP_VERSION }}'
           regex: false
 
       - name: Create Replicated Release
@@ -41,7 +44,7 @@ jobs:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           yaml-dir: ./kots
           promote-channel: ${{ env.CHANNEL_NAME }}
-          version: ${{ github.ref_name }}
+          version: ${{ env.APP_VERSION }}
 
   compatibility_matrix:
     needs: push-to-replicated
