@@ -56,6 +56,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Define App Version
+        run: echo "APP_VERSION=0.0.1-${GITHUB_REF_NAME//[^a-zA-Z0-9]/}.${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Create Customer 
         id: create-customer
         uses: replicatedhq/compatibility-actions/create-customer@v0
@@ -87,7 +90,7 @@ jobs:
           registry-password: ${{ steps.create-customer.outputs.license-id }}
           chart: oci://registry.replicated.com/${{ secrets.REPLICATED_APP }}/${{ needs.push-to-replicated.outputs.channel-slug }}/spooky-app
           name: 'spooky-app'
-          version: ${{ github.ref_name }}
+          version: ${{ env.APP_VERSION }}
           namespace: 'default'
           values: |
             image:
