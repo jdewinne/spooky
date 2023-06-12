@@ -63,9 +63,9 @@ jobs:
           replicated-app: ${{ secrets.REPLICATED_APP }}
           replicated-api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           customer-name: ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
-          channel-name: ${{ github.ref_name }}
-          license-type: trial
+          channel-slug: ${{ needs.push-to-replicated.outputs.channel-slug }}
           customer-email: ${{ github.ref_name }}@example.com
+          license-type: trial
 
       - name: Create Cluster
         id: create-cluster
