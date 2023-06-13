@@ -14,11 +14,6 @@ jobs:
       release-sequence: ${{ steps.create-release.outputs.release-sequence}}
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Log env vars
-        id: log-env-vars
-        timeout-minutes: 10
-        run: cat $GITHUB_ENV
 
       - name: Define App Version
         run: echo "APP_VERSION=0.0.1-${GITHUB_REF_NAME//[^a-zA-Z0-9]/}.${GITHUB_SHA::7}" >> $GITHUB_ENV
@@ -78,13 +73,13 @@ jobs:
       - name: Create Cluster
         id: create-cluster
         uses: replicatedhq/compatibility-actions/create-cluster@v0
-        timeout-minutes: 10
         with:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           kubernetes-distribution: ${{ matrix.cluster.distribution }}
           kubernetes-version: ${{ matrix.cluster.version }}
           cluster-name: ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
-          ttl: 20m
+          timeout-minutes: 20
+          ttl: 30m
 
       - name: Deploy the app
         uses: replicatedhq/compatibility-actions/helm-install@v0
