@@ -68,7 +68,7 @@ jobs:
           customer-name: ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
           channel-slug: ${{ needs.push-to-replicated.outputs.channel-slug }}
           customer-email: ${{ github.ref_name }}@example.com
-          license-type: trial
+          license-type: paid
 
       - name: Create Cluster
         id: create-cluster
@@ -82,19 +82,12 @@ jobs:
           ttl: 30m
 
       - name: Deploy the app
-        uses: replicatedhq/compatibility-actions/helm-install@v0
+        uses: replicatedhq/compatibility-actions/kots-install@v0
         with:
           kubeconfig: ${{ steps.create-cluster.outputs.cluster-kubeconfig }}
-          helm-path: "helm"
-          registry-username: ${{ github.ref_name }}@example.com
-          registry-password: ${{ steps.create-customer.outputs.license-id }}
-          chart: oci://registry.replicated.com/${{ secrets.REPLICATED_APP }}/${{ needs.push-to-replicated.outputs.channel-slug }}/spooky-app
-          name: 'spooky-app'
-          version: ${{ env.APP_VERSION }}
-          namespace: 'default'
-          values: |
-            image:
-              tag: latest
+          app-slug: ${{ secrets.REPLICATED_APP }}/${{ needs.push-to-replicated.outputs.channel-slug }}
+          license-file: ${{ steps.create-customer.outputs.license-file }}
+          app-version-label: ${{ env.APP_VERSION }}
 
       - name: Run a test
         # mask the kubeconfig so it doesn't show up in the logs
