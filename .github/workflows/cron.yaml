@@ -18,7 +18,7 @@ jobs:
       - name: Log env vars
         id: log-env-vars
         timeout-minutes: 10
-        run: env
+        run: cat $GITHUB_ENV
 
       - name: Define App Version
         run: echo "APP_VERSION=0.0.1-${GITHUB_REF_NAME//[^a-zA-Z0-9]/}.${GITHUB_SHA::7}" >> $GITHUB_ENV
