@@ -14,6 +14,11 @@ jobs:
       release-sequence: ${{ steps.create-release.outputs.release-sequence}}
     steps:
       - uses: actions/checkout@v3
+      
+      - name: Log env vars
+        id: log-env-vars
+        timeout-minutes: 10
+        run: echo $GITHUB_ENV
 
       - name: Define App Version
         run: echo "APP_VERSION=0.0.1-${GITHUB_REF_NAME//[^a-zA-Z0-9]/}.${GITHUB_SHA::7}" >> $GITHUB_ENV
