@@ -1,1 +1,2 @@
-# Spooky App
+# Spooky App :ghost:
+
