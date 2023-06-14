@@ -51,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cluster: [{distribution: kind, version: v1.25.3}, {distribution: k3s, version: v1.26}, {distribution: eks, version: 1.27}]
+        cluster: [{distribution: kind, version: v1.25.3, installation-method: kots}, {distribution: k3s, version: v1.26, installation-method: kots}, {distribution: eks, version: 1.27, installation-method: helm}]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -83,11 +83,28 @@ jobs:
 
       - name: Deploy the app
         uses: replicatedhq/compatibility-actions/kots-install@v0
+        if: ${{ matrix.cluster.installation-method == 'kots' }}
         with:
           kubeconfig: ${{ steps.create-cluster.outputs.cluster-kubeconfig }}
           app-slug: ${{ secrets.REPLICATED_APP }}/${{ needs.push-to-replicated.outputs.channel-slug }}
           license-file: ${{ steps.create-customer.outputs.license-file }}
           app-version-label: ${{ env.APP_VERSION }}
+
+      - name: Deploy the app
+        uses: replicatedhq/compatibility-actions/helm-install@v0
+        if: ${{ matrix.cluster.installation-method == 'helm'}}
+        with:
+          kubeconfig: ${{ steps.create-cluster.outputs.cluster-kubeconfig }}
+          helm-path: "helm"
+          registry-username: ${{ github.ref_name }}@example.com
+          registry-password: ${{ steps.create-customer.outputs.license-id }}
+          chart: oci://registry.replicated.com/${{ secrets.REPLICATED_APP }}/${{ needs.push-to-replicated.outputs.channel-slug }}/spooky-app
+          name: 'spooky-app'
+          version: ${{ env.APP_VERSION }}
+          namespace: 'default'
+          values: |
+            image:
+              tag: latest
 
       - name: Run a test
         # mask the kubeconfig so it doesn't show up in the logs
