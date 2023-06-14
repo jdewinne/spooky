@@ -69,6 +69,7 @@ jobs:
           channel-slug: ${{ needs.push-to-replicated.outputs.channel-slug }}
           customer-email: ${{ github.ref_name }}@example.com
           license-type: paid
+          expires-in: 90
 
       - name: Create Cluster
         id: create-cluster
