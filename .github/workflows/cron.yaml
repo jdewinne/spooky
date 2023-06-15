@@ -68,7 +68,7 @@ jobs:
           customer-name: ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
           channel-slug: ${{ needs.push-to-replicated.outputs.channel-slug }}
           customer-email: ${{ github.ref_name }}@example.com
-          license-type: paid
+          license-type: prod
 
       - name: Create Cluster
         id: create-cluster
