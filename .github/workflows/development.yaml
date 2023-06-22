@@ -39,7 +39,7 @@ jobs:
 
       - name: Smoke Test
         id: smoke-test
-        uses: replicatedhq/compatibility-actions/smoke-test@v0
+        uses: replicatedhq/compatibility-actions/smoke-test@fix_disk_gib
         with:
           app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
