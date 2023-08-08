@@ -12,7 +12,9 @@ jobs:
       fail-fast: false
       matrix:
         cluster: [{distribution: kind, version: 1.27.0},
-                  {distribution: k3s, version: 1.25},
+                  {distribution: k3s, version: 1.26},
+                  {distribution: helmvm, version: 1.27},
+                  {distribution: openshift, version: 4.13.0-okd},
                   {distribution: eks, version: 1.27}]
     runs-on: ubuntu-22.04
     steps:
