@@ -1,0 +1,50 @@
+name: staging-test
+
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '30 5,17 * * *'
+  workflow_dispatch:
+
+jobs:
+  compatibility-matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        cluster: [{distribution: kind, version: 1.27.0},
+                  {distribution: k3s, version: 1.25},
+                  {distribution: eks, version: 1.27}]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create Cluster
+        id: create-cluster
+        uses: replicatedhq/compatibility-actions/create-cluster@v0
+        with:
+          replicated-api-endpoint: https://api.staging.replicated.com/vendor/v3
+          api-token: ${{ secrets.REPLICATED_TOKEN_STAGING }}
+          kubernetes-distribution: ${{ matrix.cluster.distribution }}
+          kubernetes-version: ${{ matrix.cluster.version }}
+          cluster-name: ${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
+          timeout-minutes: 20
+          ttl: 30m
+
+      - name: Run a test
+        # mask the kubeconfig so it doesn't show up in the logs
+        run: |
+          echo "Running a test"
+          echo "${{ steps.create-cluster.outputs.cluster-kubeconfig }}" > kubeconfig.yaml
+          kubectl get po &
+          echo "Test complete"
+
+      - name: Remove Cluster
+        id: remove-cluster
+        if: always()
+        uses: replicatedhq/compatibility-actions/remove-cluster@v0
+        continue-on-error: true # It could be that the cluster is already removed
+        with:
+          replicated-api-endpoint: https://api.staging.replicated.com/vendor/v3
+          api-token: ${{ secrets.REPLICATED_TOKEN_STAGING }}
+          cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}  
+          
