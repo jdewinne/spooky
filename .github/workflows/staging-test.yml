@@ -1,9 +1,6 @@
 name: staging-test
 
 on:
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '30 5,17 * * *'
   workflow_dispatch:
 
 jobs:
@@ -18,8 +15,6 @@ jobs:
                   {distribution: eks, version: 1.27}]
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-
       - name: Create Cluster
         id: create-cluster
         uses: replicatedhq/compatibility-actions/create-cluster@v0
@@ -49,4 +44,4 @@ jobs:
           replicated-api-endpoint: https://api.staging.replicated.com/vendor/v3
           api-token: ${{ secrets.REPLICATED_TOKEN_STAGING }}
           cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}  
-          
+      
