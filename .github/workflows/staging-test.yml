@@ -32,7 +32,7 @@ jobs:
         run: |
           echo "Running a test"
           echo "${{ steps.create-cluster.outputs.cluster-kubeconfig }}" > kubeconfig.yaml
-          kubectl get po &
+          kubectl get po --kubeconfig='./kubeconfig.yaml'
           echo "Test complete"
 
       - name: Remove Cluster
