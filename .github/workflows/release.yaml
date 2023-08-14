@@ -15,7 +15,7 @@ jobs:
 
       - name: Get Customer Instances
         id: get-customer-instances
-        uses: replicatedhq/compatibility-actions/get-customer-instances@v0
+        uses: replicatedhq/replicated-actions/get-customer-instances@v0
         with:
           app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
@@ -52,7 +52,7 @@ jobs:
 
       - name: Smoke Test
         id: smoke-test
-        uses: replicatedhq/compatibility-actions/smoke-test@v0
+        uses: replicatedhq/replicated-actions/smoke-test@v0
         with:
           app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
@@ -90,7 +90,7 @@ jobs:
 
       - name: Create Replicated Release
         id: create-release
-        uses: replicatedhq/compatibility-actions/create-release@v0
+        uses: replicatedhq/replicated-actions/create-release@v0
         with:
           app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
