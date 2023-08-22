@@ -41,5 +41,5 @@ jobs:
       - name: Run tests
         id: run-tests
         run: |
-          echo ${{ steps.prepare-cluster.outputs.cluster-kubeconfig }} > /tmp/kubeconfig
+          echo '${{ steps.prepare-cluster.outputs.cluster-kubeconfig }}' > /tmp/kubeconfig
           c11y-tests/test.sh
