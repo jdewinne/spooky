@@ -25,7 +25,7 @@ jobs:
 
       - name: Prepare Cluster
         id: prepare-cluster
-        uses: replicatedhq/compatibility-actions/prepare-cluster@v1
+        uses: replicatedhq/compatibility-actions/prepare-cluster@joshd/prepare-cluster-kubeconfig-output
         with:
           app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
@@ -33,10 +33,13 @@ jobs:
           kubernetes-distribution: ${{ matrix.cluster.distribution }}
           kubernetes-version: ${{ matrix.cluster.version }}
           helm-chart-name: spooky-app
+          helm-run-preflights: true
           helm-values: |
             image:
               tag: latest
 
       - name: Run tests
         id: run-tests
-        run: c11y-tests/test.sh
+        run: |
+          echo ${{ steps.prepare-cluster.outputs.cluster-kubeconfig }} > /tmp/kubeconfig
+          c11y-tests/test.sh

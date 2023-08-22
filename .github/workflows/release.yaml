@@ -46,6 +46,7 @@ jobs:
           kubernetes-distribution: ${{ matrix.cluster.distribution }}
           kubernetes-version: ${{ matrix.cluster.version }}
           helm-chart-name: spooky-app
+          helm-run-preflights: false
           helm-values: |
             image:
               tag: latest
