@@ -20,3 +20,5 @@ jobs:
           entitlements: |
             - name: "number-of-users"
               value: "10"
+            - name: "num_seats"
+              value: "100"
