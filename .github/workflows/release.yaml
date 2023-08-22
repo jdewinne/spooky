@@ -15,7 +15,7 @@ jobs:
 
       - name: Get Customer Instances
         id: get-customer-instances
-        uses: replicatedhq/replicated-actions/get-customer-instances@v0
+        uses: replicatedhq/replicated-actions/get-customer-instances@v1
         with:
           app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
@@ -31,36 +31,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Define App Version
-        shell: bash
-        run: echo "APP_VERSION=0.0.1-${GITHUB_REF_NAME//[^a-zA-Z0-9]/}.${GITHUB_RUN_ID}${GITHUB_RUN_ATTEMPT}" >> $GITHUB_ENV
-
       - name: Package Helm Chart for Replicated
         id: package-helm-chart
         run: |
-          helm package spooky-app -u -d kots \
-            --app-version=0.0.1-${{ github.ref_name }} \
-            --version=${{ env.APP_VERSION }}
+          helm package spooky-app -u
 
-      - name: Update the HelmChart kind
-        uses: jacobtomlinson/gha-find-replace@v3
-        with:
-          include: 'kots/spooky-app-chart.yaml'
-          find: '$VERSION'
-          replace: ${{ env.APP_VERSION }}
-          regex: false
-
-      - name: Smoke Test
-        id: smoke-test
-        uses: replicatedhq/replicated-actions/smoke-test@v0
+      - name: Prepare Cluster
+        id: prepare-cluster
+        uses: replicatedhq/compatibility-actions/prepare-cluster@v1
         with:
           app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          yaml-dir: kots
+          chart: spooky-app-0.1.4.tgz
           kubernetes-distribution: ${{ matrix.cluster.distribution }}
           kubernetes-version: ${{ matrix.cluster.version }}
-          installation-method: helm
-          test-script: ./c11y-tests/test.sh
           helm-chart-name: spooky-app
           helm-values: |
             image:
@@ -90,7 +74,7 @@ jobs:
 
       - name: Create Replicated Release
         id: create-release
-        uses: replicatedhq/replicated-actions/create-release@v0
+        uses: replicatedhq/replicated-actions/create-release@v1
         with:
           app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}

@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Create Cluster
         id: create-cluster
-        uses: replicatedhq/replicated-actions/create-cluster@v0
+        uses: replicatedhq/replicated-actions/create-cluster@v1
         with:
           replicated-api-endpoint: https://api.staging.replicated.com/vendor/v3
           api-token: ${{ secrets.REPLICATED_TOKEN_STAGING }}
@@ -38,7 +38,7 @@ jobs:
       - name: Remove Cluster
         id: remove-cluster
         if: always()
-        uses: replicatedhq/replicated-actions/remove-cluster@v0
+        uses: replicatedhq/replicated-actions/remove-cluster@v1
         continue-on-error: true # It could be that the cluster is already removed
         with:
           replicated-api-endpoint: https://api.staging.replicated.com/vendor/v3
