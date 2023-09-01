@@ -1,0 +1,19 @@
+name: test-report-compatibility-result
+on:
+  workflow_dispatch:
+
+jobs:
+  test-customer:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Report Compatibility Result 
+        id: report-compatibility-result
+        uses: replicatedhq/replicated-actions/report-compatibility-result@joshd/sc-86717/cluster-prepare-send-results-back-to-vendorportal
+        with:
+          app-slug: ${{ secrets.REPLICATED_APP }}
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          release-sequence: 449
+          kubernetes-distribution: k3s
+          kubernetes-version: 1.26
+          success: true
+          notes: "it works"
