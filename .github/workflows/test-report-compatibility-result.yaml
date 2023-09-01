@@ -15,5 +15,4 @@ jobs:
           release-sequence: 449
           kubernetes-distribution: k3s
           kubernetes-version: 1.26
-          success: true
-          notes: "it works"
+          success: false
