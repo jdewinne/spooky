@@ -1,0 +1,25 @@
+name: test-upgrade-cluster-result
+on:
+  workflow_dispatch:
+
+jobs:
+  test-customer:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Create Cluster 
+        id: create-cluster
+        uses: replicatedhq/replicated-actions/create-cluster@joshd/sc-88617/github-action-support-for-cluster-upgrade
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          kubernetes-distribution: kurl
+          kubernetes-version: 69bdcdf
+          cluster-name: kurl-testing
+          ttl: 1h
+      - name: Upgrade Cluster 
+        id: upgrade-cluster
+        uses: replicatedhq/replicated-actions/upgrade-cluster@joshd/sc-88617/github-action-support-for-cluster-upgrade
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}
+          kubernetes-version: 9d5a44c
+
