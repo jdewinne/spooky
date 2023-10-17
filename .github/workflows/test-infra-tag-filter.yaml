@@ -1,0 +1,29 @@
+name: test-infra-filter
+
+on:
+  workflow_dispatch:
+
+jobs: 
+  run-infra-filter:
+    runs-on: ubuntu-22.04
+    outputs:
+      run-infra: ${{ steps.filter.outputs.run-infra }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get previous tag
+        id: previoustag
+        run: |
+          echo "PREVIOUS_TAG=$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1 --max-count=1`)" >> $GITHUB_OUTPUT
+        shell: bash
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          base: ${{ steps.previoustag.outputs.PREVIOUS_TAG }}
+          filters: |
+            run-infra:
+              - 'infra/ansible/**'
+      - name: Log previous tag
+        id: logtag
+        run: |
+          echo ${{ steps.previoustag.outputs.PREVIOUS_TAG }}
+        shell: bash
