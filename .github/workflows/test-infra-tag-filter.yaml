@@ -13,9 +13,10 @@ jobs:
       - name: Get previous tag
         id: previoustag
         run: |
-          tagCommit=`git rev-list --tags --skip=1 --max-count=1`
-          echo "PREVIOUS_TAG=$(git describe --abbrev=0 --tags $tagCommit)" >> $GITHUB_OUTPUT
+          echo "PREVIOUS_TAG=$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1 --max-count=1`)" >> $GITHUB_OUTPUT
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: dorny/paths-filter@v2
         id: filter
         with:
