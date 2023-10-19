@@ -1,0 +1,16 @@
+name: trigger-staging-tests
+on:
+  workflow_dispatch:
+
+jobs:
+  trigger-staging-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Trigger staging smoketests
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.CMX_GH_PAT }}
+          repository: replicatedhq/reliability-matrix
+          event-type: test-staging
