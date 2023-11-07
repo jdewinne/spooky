@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    troubleshoot.sh/kind: preflight
+  name: "{{ .Release.Name }}-preflight-config"
+stringData:
+  preflight.yaml: |
+    apiVersion: troubleshoot.sh/v1beta2
+    kind: Preflight
+    metadata:
+      name: preflight-sample
+    spec:
+      collectors: []
+      analyzers: []
