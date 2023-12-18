@@ -19,7 +19,7 @@ jobs:
         run: echo "APP_VERSION=0.0.1-${GITHUB_REF_NAME//[^a-zA-Z0-9]/}.${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Define Channel Name
-        run: echo "CHANNEL_NAME=${{ github.ref_name }}-${GITHUB_SHA::7}" >> $GITHUB_ENV
+        run: echo "CHANNEL_NAME=${{ github.ref_name }}-${GITHUB_SHA::7}-${{ github.run_id }}" >> $GITHUB_ENV
 
       - name: Package Helm Chart for Replicated
         id: package-helm-chart
