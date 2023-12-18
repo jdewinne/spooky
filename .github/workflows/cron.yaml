@@ -78,7 +78,7 @@ jobs:
 
       - name: Create Cluster
         id: create-cluster
-        uses: replicatedhq/replicated-actions/create-cluster@v1
+        uses: replicatedhq/replicated-actions/create-cluster@joshd/sc-94517/gh-actions-add-support-for-tags-in-create
         with:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           kubernetes-distribution: ${{ matrix.cluster.distribution }}
@@ -86,6 +86,9 @@ jobs:
           cluster-name: ${{ github.ref_name }}-${{ matrix.cluster.distribution }}-${{ matrix.cluster.version }}
           timeout-minutes: 20
           ttl: 30m
+          tags: |
+            - key: "cron"
+              value: "${{ github.run_id }}"
 
       - name: Deploy the app
         uses: replicatedhq/replicated-actions/kots-install@v1
