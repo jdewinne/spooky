@@ -78,7 +78,7 @@ jobs:
 
       - name: Create Cluster
         id: create-cluster
-        uses: replicatedhq/replicated-actions/create-cluster@joshd/sc-94517/gh-actions-add-support-for-tags-in-create
+        uses: replicatedhq/replicated-actions/create-cluster@v1
         with:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           kubernetes-distribution: ${{ matrix.cluster.distribution }}
