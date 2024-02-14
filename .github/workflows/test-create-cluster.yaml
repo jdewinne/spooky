@@ -11,7 +11,6 @@ jobs:
         id: create-cluster
         uses: replicatedhq/compatibility-actions/create-cluster@joshd/sc-99225/nodegroups-github-action-create-cluster
         with:
-          app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           kubernetes-distribution: eks
           node-groups: |
