@@ -1,0 +1,21 @@
+name: test-create-cluster
+on:
+  workflow_dispatch:
+
+jobs:
+  test-upgrade-cluster:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create Cluster
+        id: create-cluster
+        uses: replicatedhq/compatibility-actions/create-cluster@joshd/sc-99225/nodegroups-github-action-create-cluster
+        with:
+          app-slug: ${{ secrets.REPLICATED_APP }}
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          kubernetes-distribution: eks
+          node-groups: |
+            - name: "worker"
+              instance-type: "m6i.xlarge"
+              disk: 100
+              nodes: 3
