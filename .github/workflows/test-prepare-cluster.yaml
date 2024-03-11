@@ -19,5 +19,5 @@ jobs:
           kots-wait-duration: 5m
           customer-entitlements: |
             - name: "number-of-users"
-              value: 10
+              value: "10"
 
