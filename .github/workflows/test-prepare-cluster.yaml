@@ -9,12 +9,15 @@ jobs:
       - uses: actions/checkout@v3
       - name: Prepare Cluster
         id: prepare-cluster
-        uses: replicatedhq/compatibility-actions/prepare-cluster@v1
+        uses: replicatedhq/compatibility-actions/prepare-cluster@joshd/sc-100435/cluster-prepare-command-should-allow-setting
         with:
           app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           kubernetes-distribution: eks
-          kubernetes-version: 1.25
+          kubernetes-version: 1.28
           yaml-dir: ./kots
           kots-wait-duration: 5m
+          customer-entitlements: |
+            - name: "number-of-users"
+              value: 10
 
