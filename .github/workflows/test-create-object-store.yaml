@@ -1,0 +1,22 @@
+name: test-create-object-store
+on:
+  workflow_dispatch:
+
+jobs:
+  test-create-object-store:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create Cluster
+        id: create-cluster
+        uses: replicatedhq/compatibility-actions/create-cluster@joshd/sc-101450/cloud-addons-github-action
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          kubernetes-distribution: eks
+      - name: Create Object Store
+        id: create-object-store
+        uses: replicatedhq/compatibility-actions/create-object-store@joshd/sc-101450/cloud-addons-github-action
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}
+          bucket-name: test
