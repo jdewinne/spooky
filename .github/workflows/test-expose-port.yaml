@@ -1,0 +1,31 @@
+name: test-expose-port
+on:
+  workflow_dispatch:
+
+jobs:
+  test-expose-port:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create Cluster
+        id: create-cluster
+        uses: replicatedhq/compatibility-actions/create-cluster@joshd/sc-101450/cloud-addons-github-action
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          kubernetes-distribution: k3s
+      - name: Expose Port
+        id: expose-port
+        uses: replicatedhq/compatibility-actions/expose-port@joshd/sc-101450/cloud-addons-github-action
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}
+          port: 30080
+      - name: Echo port details
+        run: |
+          echo "Cluster ID: ${{ steps.create-cluster.outputs.cluster-id }}"
+          echo "Port hostname: ${{ steps.expose-port.outputs.hostname }}"
+      - name: Delete Cluster
+        uses: replicatedhq/compatibility-actions/remove-cluster@joshd/sc-101450/cloud-addons-github-action
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}
