@@ -20,3 +20,12 @@ jobs:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}
           bucket-name: test
+      - name: Echo add-on details
+        run: |
+          echo "Cluster ID: ${{ steps.create-cluster.outputs.cluster-id }}"
+          echo "Bucket Name: ${{ steps.create-object-store.outputs.bucket-name }}"
+      - name: Delete Cluster
+        uses: replicatedhq/compatibility-actions/remove-cluster@joshd/sc-101450/cloud-addons-github-action
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}
