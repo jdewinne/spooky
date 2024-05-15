@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-upgrade-cluster:
+  test-prepare-cluster:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
