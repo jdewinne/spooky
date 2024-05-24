@@ -56,7 +56,7 @@ jobs:
                   {distribution: kind, version: v1.26.3, installation-method: helm},
                   {distribution: kind, version: v1.27.0, installation-method: helm},
                   {distribution: k3s, version: v1.26, installation-method: kots},
-                  {distribution: k3s, version: v1.25, installation-method: kots},
+                  {distribution: k3s, version: v1.29, installation-method: kots},
                   {distribution: eks, version: 1.27, installation-method: helm}]
     runs-on: ubuntu-22.04
     steps:
