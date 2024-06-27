@@ -15,7 +15,7 @@ stringData:
         - registryImages:
             namespace: {{ .Release.Namespace | quote }}
             images:
-              - "alpine:3.9"
+              - "registry.replicated.com/tmp-relmatrix/alpine:3.9"
       analyzers:
         - clusterVersion:
             outcomes:
