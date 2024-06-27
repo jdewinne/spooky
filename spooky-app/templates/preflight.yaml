@@ -14,8 +14,6 @@ stringData:
       collectors:
         - registryImages:
             namespace: {{ .Release.Namespace | quote }}
-            imagePullSecret:
-              name: spooky-registry
             images:
               - "alpine:3.9"
       analyzers:
