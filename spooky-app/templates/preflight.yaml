@@ -31,3 +31,14 @@ stringData:
                   uri: https://kubernetes.io
               - pass:
                   message: Your cluster meets the recommended and required versions of Kubernetes.
+        - registryImages:
+            checkName: Private Registry Images
+            outcomes:
+              - fail:
+                  when: "missing > 0"
+                  message: Images are missing from registry
+              - warn:
+                  when: "errors > 0"
+                  message: Failed to check if images are present in registry
+              - pass:
+                  message: All images are present in registry
