@@ -11,7 +11,13 @@ stringData:
     metadata:
       name: preflight-sample
     spec:
-      collectors: []
+      collectors:
+        - registryImages:
+            namespace: {{ .Release.Namespace | quote }}
+            imagePullSecret:
+              name: spooky-registry
+            images:
+              - "alpine:3.9"
       analyzers:
         - clusterVersion:
             outcomes:
