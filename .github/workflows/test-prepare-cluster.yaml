@@ -7,6 +7,21 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
+      - name: Package Helm Chart for Replicated
+        id: package-helm-chart
+        run: |
+          helm package spooky-app -u -d kots \
+            --app-version=${{ github.ref_name }} \
+            --version=0.0.1
+
+      - name: Update the HelmChart kind
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          include: 'kots/spooky-app-chart.yaml'
+          find: '$VERSION'
+          replace: '0.0.1'
+          regex: false
+          
       - name: Prepare Cluster
         id: prepare-cluster
         uses: replicatedhq/replicated-actions/prepare-cluster@joshd/prepare-cluster-pin-kots-version
