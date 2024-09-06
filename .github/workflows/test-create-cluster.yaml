@@ -14,7 +14,7 @@ jobs:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           kubernetes-distribution: eks
           node-groups: |
-            - nodes: 3
+            - name: testingng
       - name: Remove Cluster
         id: remove-cluster
         uses: replicatedhq/compatibility-actions/remove-cluster@v1
