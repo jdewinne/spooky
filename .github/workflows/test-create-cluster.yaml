@@ -12,7 +12,7 @@ jobs:
         uses: replicatedhq/compatibility-actions/create-cluster@v1
         with:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          kubernetes-distribution: k3s
+          kubernetes-distribution: eks
           node-groups: |
             - nodes: 3
       - name: Remove Cluster
