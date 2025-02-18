@@ -24,7 +24,7 @@ jobs:
           
       - name: Prepare Cluster
         id: prepare-cluster
-        uses: replicatedhq/replicated-actions/prepare-cluster@joshd/sc-110986/fix-follow-up-use-the-latest-kots-with-cluster
+        uses: replicatedhq/replicated-actions/prepare-cluster@joshd/sc-120174/update-gh-action-to-support-passing-needed
         with:
           app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
