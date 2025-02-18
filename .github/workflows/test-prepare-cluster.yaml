@@ -28,9 +28,10 @@ jobs:
         with:
           app-slug: ${{ secrets.REPLICATED_APP }}
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          kubernetes-distribution: k3s
+          kubernetes-distribution: eks
           yaml-dir: ./kots
           kots-wait-duration: 5m
+          kots-storage-class: gp2
           customer-entitlements: |
             - name: "number-of-users"
               value: "10"
