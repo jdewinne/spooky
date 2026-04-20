@@ -1,0 +1,24 @@
+name: test-create-customer
+on:
+  workflow_dispatch:
+
+jobs:
+  test-create-customer:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create Customer
+        id: create-customer
+        uses: replicatedhq/replicated-actions/create-cluster@jdewinne/update-replicated-lib
+        with:
+          app-slug: ${{ secrets.REPLICATED_APP }}
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          customer-name: test-customer-ec
+          is-embedded-cluster-download-enabled: true
+      - name: Archive Customer
+        id: archive-customer
+        uses: replicatedhq/replicated-actions/archive-customer@jdewinne/update-replicated-lib
+        with:
+          app-slug: ${{ secrets.REPLICATED_APP }}
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          customer-name: test-customer-ec
