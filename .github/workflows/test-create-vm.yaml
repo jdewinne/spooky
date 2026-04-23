@@ -1,0 +1,21 @@
+name: test-create-vm
+on:
+  workflow_dispatch:
+
+jobs:
+  test-create-vm:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create VM
+        id: create-vm
+        uses: replicatedhq/compatibility-actions/create-vm@jdewinne/add-vm-actions
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          distribution: ubuntu
+      - name: Remove VM
+        id: remove-vm
+        uses: replicatedhq/compatibility-actions/remove-vm@jdewinne/add-vm-actions
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          vm-id: ${{ steps.create-cm.outputs.vm-id }}
