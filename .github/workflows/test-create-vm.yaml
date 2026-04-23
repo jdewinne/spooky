@@ -18,4 +18,4 @@ jobs:
         uses: replicatedhq/compatibility-actions/remove-vm@jdewinne/add-vm-actions
         with:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          vm-id: ${{ steps.create-cm.outputs.vm-id }}
+          vm-id: ${{ steps.create-vm.outputs.vm-id }}
