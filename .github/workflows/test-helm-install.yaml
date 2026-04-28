@@ -22,6 +22,16 @@ jobs:
           chart: oci://ghcr.io/stefanprodan/charts/podinfo
           name: podinfo
           namespace: default
+          wait: "true"
+      - name: Verify install
+        run: |
+          echo "${{ steps.create-cluster.outputs.cluster-kubeconfig }}" > kubeconfig.yaml
+          export KUBECONFIG=./kubeconfig.yaml
+          helm status podinfo -n default | grep -E '^STATUS: deployed'
+          kubectl rollout status deployment/podinfo -n default --timeout=2m
+          # Confirm no user-supplied values were applied
+          helm get values podinfo -n default | tee values.out
+          grep -E '^USER-SUPPLIED VALUES: null$' values.out
       - name: Remove Cluster
         if: always()
         uses: replicatedhq/replicated-actions/remove-cluster@v1
@@ -48,10 +58,19 @@ jobs:
           chart: oci://ghcr.io/stefanprodan/charts/podinfo
           name: podinfo
           namespace: default
+          wait: "true"
           values: |
             replicaCount: 1
             ui:
               message: "hello from inline values"
+      - name: Verify install and inline values applied
+        run: |
+          echo "${{ steps.create-cluster.outputs.cluster-kubeconfig }}" > kubeconfig.yaml
+          export KUBECONFIG=./kubeconfig.yaml
+          helm status podinfo -n default | grep -E '^STATUS: deployed'
+          kubectl rollout status deployment/podinfo -n default --timeout=2m
+          helm get values podinfo -n default | tee values.out
+          grep -F 'hello from inline values' values.out
       - name: Remove Cluster
         if: always()
         uses: replicatedhq/replicated-actions/remove-cluster@v1
@@ -87,7 +106,16 @@ jobs:
           chart: oci://ghcr.io/stefanprodan/charts/podinfo
           name: podinfo
           namespace: default
+          wait: "true"
           values-file: ci/values.yaml
+      - name: Verify install and values-file applied
+        run: |
+          echo "${{ steps.create-cluster.outputs.cluster-kubeconfig }}" > kubeconfig.yaml
+          export KUBECONFIG=./kubeconfig.yaml
+          helm status podinfo -n default | grep -E '^STATUS: deployed'
+          kubectl rollout status deployment/podinfo -n default --timeout=2m
+          helm get values podinfo -n default | tee values.out
+          grep -F 'hello from values-file' values.out
       - name: Remove Cluster
         if: always()
         uses: replicatedhq/replicated-actions/remove-cluster@v1
