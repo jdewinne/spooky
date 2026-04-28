@@ -36,6 +36,7 @@ jobs:
           helm-values: |
             image:
               tag: latest
+          export-kubeconfig: true
 
       - name: Run tests
         id: run-tests
