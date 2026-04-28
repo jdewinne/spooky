@@ -11,7 +11,8 @@ jobs:
         uses: replicatedhq/replicated-actions/create-cluster@v1
         with:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          kubernetes-distribution: k3s
+          kubernetes-distribution: kind
+          kubernetes-version: 1.35.1
           cluster-name: helm-install-test-no-values
           ttl: 10m
       - name: Helm Install (no values)
@@ -47,7 +48,8 @@ jobs:
         uses: replicatedhq/replicated-actions/create-cluster@v1
         with:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          kubernetes-distribution: k3s
+          kubernetes-distribution: kind
+          kubernetes-version: 1.35.1
           cluster-name: helm-install-test-with-values
           ttl: 10m
       - name: Helm Install (with values)
@@ -95,7 +97,8 @@ jobs:
         uses: replicatedhq/replicated-actions/create-cluster@v1
         with:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
-          kubernetes-distribution: k3s
+          kubernetes-distribution: kind
+          kubernetes-version: 1.35.1
           cluster-name: helm-install-test-values-file
           ttl: 10m
       - name: Helm Install (values-file)
