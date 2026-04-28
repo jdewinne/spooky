@@ -1,0 +1,127 @@
+name: test-helm-install
+on:
+  workflow_dispatch:
+
+jobs:
+  test-helm-install-no-values:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Create Cluster
+        id: create-cluster
+        uses: replicatedhq/replicated-actions/create-cluster@v1
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          kubernetes-distribution: kind
+          kubernetes-version: 1.35.1
+          cluster-name: helm-install-test-no-values
+          ttl: 10m
+      - name: Helm Install (no values)
+        uses: replicatedhq/replicated-actions/helm-install@joshd/sc-136400/helm-install-action-values-input-expects
+        with:
+          helm-path: helm
+          kubeconfig: ${{ steps.create-cluster.outputs.cluster-kubeconfig }}
+          chart: oci://ghcr.io/stefanprodan/charts/podinfo
+          name: podinfo
+          namespace: default
+          wait: "true"
+      - name: Verify install
+        run: |
+          echo "${{ steps.create-cluster.outputs.cluster-kubeconfig }}" > kubeconfig.yaml
+          export KUBECONFIG=./kubeconfig.yaml
+          helm status podinfo -n default | grep -E '^STATUS: deployed'
+          kubectl rollout status deployment/podinfo -n default --timeout=2m
+          # Confirm no user-supplied values were applied
+          helm get values podinfo -n default | tee values.out
+          grep -E '^USER-SUPPLIED VALUES: null$' values.out
+      - name: Remove Cluster
+        if: always()
+        uses: replicatedhq/replicated-actions/remove-cluster@v1
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}
+
+  test-helm-install-with-values:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Create Cluster
+        id: create-cluster
+        uses: replicatedhq/replicated-actions/create-cluster@v1
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          kubernetes-distribution: kind
+          kubernetes-version: 1.35.1
+          cluster-name: helm-install-test-with-values
+          ttl: 10m
+      - name: Helm Install (with values)
+        uses: replicatedhq/replicated-actions/helm-install@joshd/sc-136400/helm-install-action-values-input-expects
+        with:
+          helm-path: helm
+          kubeconfig: ${{ steps.create-cluster.outputs.cluster-kubeconfig }}
+          chart: oci://ghcr.io/stefanprodan/charts/podinfo
+          name: podinfo
+          namespace: default
+          wait: "true"
+          values: |
+            replicaCount: 1
+            ui:
+              message: "hello from inline values"
+      - name: Verify install and inline values applied
+        run: |
+          echo "${{ steps.create-cluster.outputs.cluster-kubeconfig }}" > kubeconfig.yaml
+          export KUBECONFIG=./kubeconfig.yaml
+          helm status podinfo -n default | grep -E '^STATUS: deployed'
+          kubectl rollout status deployment/podinfo -n default --timeout=2m
+          helm get values podinfo -n default | tee values.out
+          grep -F 'hello from inline values' values.out
+      - name: Remove Cluster
+        if: always()
+        uses: replicatedhq/replicated-actions/remove-cluster@v1
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}
+
+  test-helm-install-with-values-file:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Write values file
+        run: |
+          mkdir -p ci
+          cat > ci/values.yaml <<'EOF'
+          replicaCount: 1
+          ui:
+            message: "hello from values-file"
+          EOF
+      - name: Create Cluster
+        id: create-cluster
+        uses: replicatedhq/replicated-actions/create-cluster@v1
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          kubernetes-distribution: kind
+          kubernetes-version: 1.35.1
+          cluster-name: helm-install-test-values-file
+          ttl: 10m
+      - name: Helm Install (values-file)
+        uses: replicatedhq/replicated-actions/helm-install@joshd/sc-136400/helm-install-action-values-input-expects
+        with:
+          helm-path: helm
+          kubeconfig: ${{ steps.create-cluster.outputs.cluster-kubeconfig }}
+          chart: oci://ghcr.io/stefanprodan/charts/podinfo
+          name: podinfo
+          namespace: default
+          wait: "true"
+          values-file: ci/values.yaml
+      - name: Verify install and values-file applied
+        run: |
+          echo "${{ steps.create-cluster.outputs.cluster-kubeconfig }}" > kubeconfig.yaml
+          export KUBECONFIG=./kubeconfig.yaml
+          helm status podinfo -n default | grep -E '^STATUS: deployed'
+          kubectl rollout status deployment/podinfo -n default --timeout=2m
+          helm get values podinfo -n default | tee values.out
+          grep -F 'hello from values-file' values.out
+      - name: Remove Cluster
+        if: always()
+        uses: replicatedhq/replicated-actions/remove-cluster@v1
+        with:
+          api-token: ${{ secrets.REPLICATED_API_TOKEN }}
+          cluster-id: ${{ steps.create-cluster.outputs.cluster-id }}

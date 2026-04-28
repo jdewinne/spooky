@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cluster: [ {distribution: kind, version: v1.25.3}]
+        cluster: [ {distribution: kind, version: 1.34.3}, {distribution: kind, version: 1.35.1}]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -36,6 +36,7 @@ jobs:
           helm-values: |
             image:
               tag: latest
+          export-kubeconfig: true
 
       - name: Run tests
         id: run-tests
