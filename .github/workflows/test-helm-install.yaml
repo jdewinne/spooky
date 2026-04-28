@@ -30,9 +30,9 @@ jobs:
           export KUBECONFIG=./kubeconfig.yaml
           helm status podinfo -n default | grep -E '^STATUS: deployed'
           kubectl rollout status deployment/podinfo -n default --timeout=2m
-          # Confirm no user-supplied values were applied
+          # Confirm no user-supplied values were applied (helm prints "null" on its own line)
           helm get values podinfo -n default | tee values.out
-          grep -E '^USER-SUPPLIED VALUES: null$' values.out
+          grep -Fxq null values.out
       - name: Remove Cluster
         if: always()
         uses: replicatedhq/replicated-actions/remove-cluster@v1
